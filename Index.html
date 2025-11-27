@@ -3,47 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Docs</title>
+    <title>Google Docs: Master Class Definitiva</title>
     
     <!-- Librerías -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- ESTILOS NIVEL 1000 --- */
+        /* --- ESTILOS NIVEL 2000 (MEJORADOS) --- */
         :root {
-            --primary: #4F46E5;
-            --secondary: #EC4899;
-            --glass: rgba(255, 255, 255, 0.9);
-        }
-        /* Estado Activo con Efecto Radar */
-        @keyframes pulse-radar {
-            0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(99, 102, 241, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+            --primary: #4338ca; /* Indigo más profundo */
+            --primary-light: #6366f1;
+            --secondary: #db2777; /* Pink más vibrante */
+            --secondary-light: #ec4899;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.9);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
         }
 
-        .nav-pill.active {
-            @apply text-indigo-800 bg-white border-indigo-50 transform scale-105;
-            animation: pulse-radar 2s infinite; /* Efecto pulsante añadido */
-            border: 1px solid rgba(99,102,241,0.2);
-        }
-
-        /* Mostrar barra al estar activo */
-        .nav-pill.active::after { transform: scaleX(1); }
-
-        /* Estilo especial para el último botón (Ejercicios) */
-        #tab-6.nav-pill.active {
-            @apply text-yellow-800 bg-yellow-50 border-yellow-200;
-            animation: none; /* Sin radar para el final, o uno dorado */
-            box-shadow: 0 4px 20px -5px rgba(234,179,8,0.5);
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
         
         h1, h2, h3, h4, .brand-font { font-family: 'Outfit', sans-serif; }
 
-        /* Fondo Animado */
+        /* Fondo Animado (Sin cambios) */
         .bg-gradient-animate {
             background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
             background-size: 400% 400%;
@@ -56,53 +42,70 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Glassmorphism Cards */
+        /* Blobs de fondo (Sin cambios) */
+        .blob {
+            position: absolute; filter: blur(80px); z-index: -1; opacity: 0.6;
+            animation: float 10s infinite ease-in-out;
+        }
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(30px, -30px); }
+        }
+
+        /* Glassmorphism Cards (Mejorado) */
         .glass-card {
-            background: var(--glass);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-            border-radius: 20px;
-            transition: all 0.3s ease;
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            border-radius: 24px; /* Bordes más redondeados */
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .glass-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.15);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px 0 rgba(31, 38, 135, 0.2);
+            border-color: rgba(255, 255, 255, 1);
         }
 
         /* --- NAVEGACIÓN MEJORADA --- */
         .nav-pill {
-            @apply px-4 py-3 rounded-xl text-sm font-bold text-slate-500 cursor-pointer transition-all border border-transparent whitespace-nowrap select-none flex items-center gap-2 relative overflow-hidden bg-white/40 hover:bg-white/60 backdrop-blur-sm;
+            @apply px-5 py-3.5 rounded-2xl text-sm font-bold text-slate-500 cursor-pointer transition-all border border-transparent whitespace-nowrap select-none flex items-center gap-3 relative overflow-hidden bg-white/50 hover:bg-white/70 backdrop-blur-md;
         }
         
         /* Barra indicadora inferior animada */
         .nav-pill::after {
             content: '';
             position: absolute;
-            bottom: 0; left: 0; width: 100%; h-1;
-            height: 3px;
+            bottom: 0; left: 0; width: 100%; height: 3px;
             background: linear-gradient(to right, var(--primary), var(--secondary));
-            transform: scaleX(0); /* Oculto inicialmente */
+            transform: scaleX(0);
             transform-origin: left;
-            transition: transform 0.3s ease-out;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .nav-pill:hover { @apply text-indigo-600; }
+        .nav-pill:hover { @apply text-indigo-700; }
 
-        /* Estado Activo */
+        /* Estado Activo con Efecto Radar (Sin cambios en animación) */
+        @keyframes pulse-radar {
+            0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
+            70% { box-shadow: 0 0 0 12px rgba(99, 102, 241, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+        }
+
         .nav-pill.active {
-            @apply text-indigo-800 bg-white shadow-[0_4px_20px_-5px_rgba(99,102,241,0.3)] border-indigo-50 transform scale-105;
+            @apply text-indigo-800 bg-white shadow-[0_8px_24px_-6px_rgba(99,102,241,0.4)] border-indigo-100 transform scale-105;
+            animation: pulse-radar 2s infinite;
         }
 
-        /* Mostrar barra al estar activo */
         .nav-pill.active::after { transform: scaleX(1); }
 
         /* Estilo especial para el último botón (Ejercicios) */
         #tab-6.nav-pill.active {
-            @apply text-yellow-800 bg-yellow-50 border-yellow-200 shadow-[0_4px_20px_-5px_rgba(234,179,8,0.3)];
+            @apply text-yellow-800 bg-yellow-50 border-yellow-200 shadow-[0_8px_24px_-6px_rgba(234,179,8,0.4)];
+            animation: none;
         }
-        #tab-6.nav-pill::after {
+        #tab-6.nav-pill.active::after {
             background: linear-gradient(to right, #facc15, #ea580c);
         }
 
@@ -113,333 +116,351 @@
 
         /* Utilidades */
         .interactive-btn { @apply active:scale-95 transition-transform select-none cursor-pointer; }
-        .fade-in { animation: fadeIn 0.4s ease-out forwards; opacity: 0; transform: translateY(10px); }
+        .fade-in { animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; opacity: 0; transform: translateY(20px); }
         @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
 
-        /* Blobs de fondo */
-        .blob {
-            position: absolute; filter: blur(60px); z-index: -1; opacity: 0.5;
-            animation: float 10s infinite ease-in-out;
-        }
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(30px, -30px); }
-        }
+        /* Estilos de Texto Rico (Mejorado) */
+        .rich-text p { margin-bottom: 1rem; font-size: 0.9375rem; line-height: 1.7; color: #475569; }
+        .rich-text b { color: #1e293b; font-weight: 600; }
+        .rich-text ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; font-size: 0.9375rem; color: #475569; }
+        .rich-text li { margin-bottom: 0.5rem; }
+        .concept-tag { @apply inline-block px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider mr-2 shadow-sm; }
 
-        /* Estilos de Texto Rico */
-        .rich-text p { margin-bottom: 0.75rem; font-size: 0.875rem; line-height: 1.6; color: #475569; }
-        .rich-text b { color: #1e293b; }
-        .rich-text ul { list-style-type: disc; padding-left: 1.25rem; margin-bottom: 0.75rem; font-size: 0.875rem; color: #475569; }
-        .rich-text li { margin-bottom: 0.25rem; }
-        .concept-tag { @apply inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider mr-2; }
-
-        /* --- BOTÓN CONTINUAR ELEGANTE (Minimalista) --- */
+        /* --- BOTÓN CONTINUAR ELEGANTE (Re-diseñado) --- */
         .btn-continue {
-            /* Diseño Sobrio */
-            background-color: #1e293b; /* Slate-800 */
+            background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: #f8fafc;
-            
-            /* Estructura */
-            @apply flex items-center gap-3 px-6 py-3 rounded-lg font-medium shadow-sm transition-all duration-300 cursor-pointer text-sm ml-auto tracking-wide;
+            @apply flex items-center gap-4 px-8 py-3.5 rounded-xl font-semibold shadow-lg transition-all duration-300 cursor-pointer text-sm ml-auto tracking-wide hover:shadow-xl hover:-translate-y-1;
         }
 
-        .btn-continue:hover { 
-            background-color: #334155; /* Slate-700 */
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            padding-right: 2rem; /* Efecto sutil de expansión */
-        }
+        .btn-continue i { transition: transform 0.3s ease; }
+        .btn-continue:hover i { transform: translateX(6px); }
+        .btn-continue:active { @apply scale-95 shadow-md; }
         
-        .btn-continue i {
-            transition: transform 0.3s ease;
-        }
-        
-        .btn-continue:hover i {
-            transform: translateX(4px);
-        }
-
-        .btn-continue:active { @apply scale-95; }
-        
-        /* Botón Final - Un poco más destacado pero elegante */
+        /* Botón Final (Re-diseñado) */
         .btn-final {
-            background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%); /* Indigo sutil */
-            border: 1px solid rgba(99, 102, 241, 0.2);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border: none;
+            @apply text-white shadow-lg hover:shadow-2xl shadow-indigo-500/30;
         }
         .btn-final:hover {
-            box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.3);
-        }
-
-        /* Google Plus Colors */
-        .plus-google-colors {
-            background: linear-gradient(to bottom right, #EA4335 0%, #EA4335 25%, #4285F4 25%, #4285F4 50%, #34A853 50%, #34A853 75%, #FBBC05 75%, #FBBC05 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+             box-shadow: 0 12px 24px -6px rgba(79, 70, 229, 0.5);
         }
     </style>
 </head>
-<body class="flex flex-col h-screen w-screen bg-slate-50 relative">
+<body class="flex flex-col h-screen w-screen bg-slate-50 relative overflow-hidden">
 
-    <!-- Fondo Dinámico -->
+    <!-- Fondo Dinámico (Sin cambios) -->
     <div class="bg-gradient-animate"></div>
-    <div class="blob bg-indigo-400 w-96 h-96 top-0 left-0 rounded-full"></div>
-    <div class="blob bg-pink-400 w-80 h-80 bottom-0 right-0 rounded-full animation-delay-2000"></div>
+    <div class="blob bg-indigo-400 w-[40rem] h-[40rem] -top-20 -left-20 rounded-full mix-blend-multiply"></div>
+    <div class="blob bg-pink-400 w-[35rem] h-[35rem] -bottom-20 -right-20 rounded-full mix-blend-multiply animation-delay-2000"></div>
+    <div class="blob bg-cyan-400 w-[30rem] h-[30rem] top-1/3 right-1/3 rounded-full mix-blend-multiply animation-delay-4000"></div>
 
-    <!-- HEADER -->
-    <header class="p-4 z-50 shrink-0">
-        <div class="glass-card px-6 py-4 flex flex-col lg:flex-row items-center justify-between gap-6 max-w-7xl mx-auto">
-            <div class="flex items-center gap-4 w-full lg:w-auto justify-between lg:justify-start">
-                <div class="flex items-center gap-3">
-                    <div class="bg-gradient-to-tr from-indigo-600 to-purple-600 p-2.5 rounded-xl text-white shadow-md">
-                        <i class="fa-solid fa-graduation-cap text-xl"></i>
+
+    <!-- HEADER (Mejorado) -->
+    <header class="p-6 z-50 shrink-0">
+        <div class="glass-card px-8 py-5 flex flex-col lg:flex-row items-center justify-between gap-8 max-w-[90rem] mx-auto">
+            <div class="flex items-center gap-6 w-full lg:w-auto justify-between lg:justify-start">
+                <div class="flex items-center gap-4 group cursor-default">
+                    <div class="bg-gradient-to-tr from-indigo-600 to-purple-600 p-3 rounded-2xl text-white shadow-lg group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-graduation-cap text-2xl"></i>
                     </div>
                     <div>
-                        <h1 class="text-xl font-extrabold text-slate-800 brand-font leading-none">DOCS <span class="text-indigo-600">MASTER</span></h1>
-                        <p class="text-[10px] text-slate-500 font-bold tracking-wider uppercase">Google Docs</p>
+                        <h1 class="text-2xl font-extrabold text-slate-800 brand-font leading-none tracking-tight">DOCS <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">MASTER</span></h1>
+                        <p class="text-[11px] text-slate-500 font-bold tracking-widest uppercase mt-1">Google Docs</p>
                     </div>
                 </div>
                 
-                <!-- Barra de Progreso -->
-                <div class="hidden md:block w-32 h-2 bg-slate-200 rounded-full overflow-hidden ml-4">
-                    <div id="progress-bar" class="h-full bg-gradient-to-r from-indigo-500 to-purple-500 w-[15%] transition-all duration-500"></div>
+                <!-- Barra de Progreso (Mejorada) -->
+                <div class="hidden lg:flex flex-col gap-2 w-48 ml-8">
+                    <div class="flex justify-between text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                        <span>Progreso</span>
+                        <span id="progress-text">0%</span>
+                    </div>
+                    <div class="h-2.5 bg-slate-200/50 rounded-full overflow-hidden backdrop-blur-sm border border-slate-100/50">
+                        <div id="progress-bar" class="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 w-[0%] transition-all duration-700 ease-out rounded-full shadow-[0_2px_10px_rgba(99,102,241,0.4)] relative">
+                            <div class="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full shadow-sm border-2 border-pink-500 opacity-0 progress-glow transition-opacity"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Navegación Mejorada -->
-            <nav class="flex overflow-x-auto gap-3 no-scrollbar w-full lg:w-auto pb-1 lg:pb-0 p-1">
-                <div onclick="switchTab(1)" id="tab-1" class="nav-pill active">1. Ecosistema</div>
-                <div onclick="switchTab(2)" id="tab-2" class="nav-pill">2. Edición</div>
-                <div onclick="switchTab(3)" id="tab-3" class="nav-pill">3. Diseño</div>
-                <div onclick="switchTab(4)" id="tab-4" class="nav-pill">4. Colaboración</div>
-                <div onclick="switchTab(5)" id="tab-5" class="nav-pill">5. IA & Final</div>
-                <div onclick="switchTab(6)" id="tab-6" class="nav-pill">Ejercicios 🎓</div>
+            <nav class="flex overflow-x-auto gap-4 no-scrollbar w-full lg:w-auto pb-2 lg:pb-0 p-1">
+                <div onclick="switchTab(1)" id="tab-1" class="nav-pill active">
+                    <i class="fa-solid fa-layer-group text-lg opacity-70"></i> 1. Ecosistema
+                </div>
+                <div onclick="switchTab(2)" id="tab-2" class="nav-pill">
+                    <i class="fa-solid fa-wand-magic-sparkles text-lg opacity-70"></i> 2. Edición
+                </div>
+                <div onclick="switchTab(3)" id="tab-3" class="nav-pill">
+                    <i class="fa-solid fa-palette text-lg opacity-70"></i> 3. Diseño
+                </div>
+                <div onclick="switchTab(4)" id="tab-4" class="nav-pill">
+                    <i class="fa-solid fa-users text-lg opacity-70"></i> 4. Colaboración
+                </div>
+                <div onclick="switchTab(5)" id="tab-5" class="nav-pill">
+                    <i class="fa-solid fa-robot text-lg opacity-70"></i> 5. IA & Final
+                </div>
+                <div onclick="switchTab(6)" id="tab-6" class="nav-pill">
+                    <i class="fa-solid fa-medal text-lg opacity-70"></i> Ejercicios 🎓
+                </div>
             </nav>
         </div>
     </header>
 
-    <!-- CONTENIDO -->
+    <!-- CONTENIDO (Mejorado) -->
     <main class="flex-1 overflow-hidden relative w-full flex justify-center">
-        <div class="w-full h-full overflow-y-auto p-4 pb-24 scroll-smooth" id="scroll-container">
+        <div class="w-full h-full overflow-y-auto p-6 pb-32 scroll-smooth" id="scroll-container">
             
             <!-- MÓDULO 1: ECOSISTEMA -->
-            <section id="view-1" class="max-w-6xl mx-auto fade-in">
-                <div class="text-center mb-10">
-                    <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Módulo 1</span>
-                    <h2 class="text-4xl font-bold text-slate-800 brand-font mt-2">Introducción al Ecosistema</h2>
+            <section id="view-1" class="max-w-[90rem] mx-auto fade-in">
+                <div class="text-center mb-12">
+                    <span class="bg-indigo-100 text-indigo-700 px-4 py-1.5 rounded-full text-sm font-bold uppercase tracking-wide shadow-sm">Módulo 1</span>
+                    <h2 class="text-5xl font-extrabold text-slate-800 brand-font mt-4 tracking-tight">Introducción al Ecosistema</h2>
                 </div>
 
-                <div class="grid lg:grid-cols-12 gap-8">
+                <div class="grid lg:grid-cols-12 gap-10">
                     <!-- Columna Izquierda: Teoría Profunda -->
-                    <div class="lg:col-span-5 space-y-6">
-                        <div class="glass-card p-6 rich-text">
-                            <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-layer-group text-indigo-500"></i> Contexto: Google Workspace</h3>
+                    <div class="lg:col-span-5 space-y-8">
+                        <div class="glass-card p-8 rich-text">
+                            <h3 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-3"><i class="fa-solid fa-layer-group text-indigo-500"></i> Contexto: Google Workspace</h3>
                             
-                            <div class="mb-4 pb-4 border-b border-slate-200">
+                            <div class="mb-6 pb-6 border-b border-slate-200/50">
                                 <span class="concept-tag bg-blue-100 text-blue-700">Definición</span>
-                                <p class="mt-2">Google Workspace es la suite que integra todas las herramientas de productividad (Gmail, Drive, Calendar, Meet) bajo un mismo techo. <b>Google Docs</b> es el procesador de texto de esta familia.</p>
+                                <p class="mt-3 text-base">Google Workspace es la suite que integra todas las herramientas de productividad (Gmail, Drive, Calendar, Meet) bajo un mismo techo. <b>Google Docs</b> es el procesador de texto de esta familia.</p>
                             </div>
 
                             <div>
                                 <span class="concept-tag bg-purple-100 text-purple-700">Word vs Docs</span>
-                                <ul class="mt-2 space-y-2">
-                                    <li><i class="fa-solid fa-hard-drive text-red-400 mr-2"></i><b>Tradicional (Word):</b> Archivos locales en tu disco duro. Riesgo de pérdida si se daña la PC. Diseño individual.</li>
-                                    <li><i class="fa-solid fa-cloud text-green-500 mr-2"></i><b>Nube (Docs):</b> Vive en internet. Colaborativo por diseño. Accesible desde cualquier lugar.</li>
+                                <ul class="mt-3 space-y-4">
+                                    <li class="flex gap-3">
+                                        <div class="bg-red-100 p-2 rounded-lg shrink-0"><i class="fa-solid fa-hard-drive text-red-500"></i></div>
+                                        <div><b>Tradicional (Word):</b> Archivos locales en tu disco duro. Riesgo de pérdida si se daña la PC. Diseño individual.</div>
+                                    </li>
+                                    <li class="flex gap-3">
+                                        <div class="bg-green-100 p-2 rounded-lg shrink-0"><i class="fa-solid fa-cloud text-green-600"></i></div>
+                                        <div><b>Nube (Docs):</b> Vive en internet. Colaborativo por diseño. Accesible desde cualquier lugar.</div>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
 
-                        <div class="glass-card p-6 bg-gradient-to-br from-white to-blue-50 rich-text">
-                            <h3 class="text-lg font-bold text-slate-800 mb-3"><i class="fa-solid fa-wifi text-blue-500"></i> Beneficios Cloud</h3>
-                            <ul class="space-y-3">
-                                <li class="flex gap-3 items-start"><i class="fa-solid fa-mobile-screen text-blue-500 mt-1"></i> <div><b>Omnicanalidad:</b> Empieza en la oficina, edita en el celular en el bus, termina en la laptop en casa.</div></li>
-                                <li class="flex gap-3 items-start"><i class="fa-solid fa-floppy-disk text-green-500 mt-1"></i> <div><b>Guardado Automático:</b> <span class="bg-red-100 text-red-800 px-1 rounded text-[10px] font-bold">¡NO BUSQUES EL BOTÓN GUARDAR!</span> No existe. Se guarda cada letra al instante.</div></li>
-                                <li class="flex gap-3 items-start"><i class="fa-solid fa-plane-slash text-slate-400 mt-1"></i> <div><b>Modo Offline:</b> Instala la extensión. Edita sin internet y se sincroniza al recuperar conexión.</div></li>
+                        <div class="glass-card p-8 bg-gradient-to-br from-white/60 to-blue-50/60 rich-text border-blue-100">
+                            <h3 class="text-2xl font-bold text-slate-800 mb-6"><i class="fa-solid fa-wifi text-blue-500 mr-2"></i> Beneficios Cloud</h3>
+                            <ul class="space-y-5">
+                                <li class="flex gap-4 items-start">
+                                    <div class="bg-blue-100 p-2.5 rounded-xl shrink-0 shadow-sm"><i class="fa-solid fa-mobile-screen text-blue-600 text-lg"></i></div>
+                                    <div><b>Omnicanalidad:</b> Empieza en la oficina, edita en el celular en el bus, termina en la laptop en casa.</div>
+                                </li>
+                                <li class="flex gap-4 items-start">
+                                    <div class="bg-green-100 p-2.5 rounded-xl shrink-0 shadow-sm"><i class="fa-solid fa-floppy-disk text-green-600 text-lg"></i></div>
+                                    <div><b>Guardado Automático:</b> <span class="bg-red-100 text-red-800 px-2 py-0.5 rounded-md text-[11px] font-bold uppercase tracking-wider">¡NO BUSQUES EL BOTÓN GUARDAR!</span> No existe. Se guarda cada letra al instante.</div>
+                                </li>
+                                <li class="flex gap-4 items-start">
+                                    <div class="bg-slate-200 p-2.5 rounded-xl shrink-0 shadow-sm"><i class="fa-solid fa-plane-slash text-slate-600 text-lg"></i></div>
+                                    <div><b>Modo Offline:</b> Instala la extensión. Edita sin internet y se sincroniza al recuperar conexión.</div>
+                                </li>
                             </ul>
                         </div>
                     </div>
 
                     <!-- Columna Derecha: Interfaz y Acceso -->
-                    <div class="lg:col-span-7 space-y-6">
+                    <div class="lg:col-span-7 space-y-8">
                         <!-- Acceso -->
-                        <div class="glass-card p-6">
-                            <h3 class="text-lg font-bold text-slate-800 mb-4">Acceso y Dashboard</h3>
+                        <div class="glass-card p-8">
+                            <h3 class="text-2xl font-bold text-slate-800 mb-6">Acceso y Dashboard</h3>
                             
-                            <div class="bg-slate-900 rounded-xl p-4 text-white relative overflow-hidden min-h-[200px] flex flex-col items-center justify-center mb-4">
-                                <div class="absolute top-2 right-2 flex gap-2 items-center">
-                                    <span class="text-xs text-slate-400">Gmail</span>
+                            <div class="bg-slate-900 rounded-2xl p-6 text-white relative overflow-hidden min-h-[240px] flex flex-col items-center justify-center mb-6 shadow-xl group">
+                                <div class="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-950 opacity-90 group-hover:opacity-100 transition-opacity"></div>
+                                <div class="absolute top-4 right-4 flex gap-4 items-center z-10">
+                                    <span class="text-sm text-slate-400 font-medium">Gmail</span>
                                     <!-- Waffle -->
-                                    <div class="w-8 h-8 grid grid-cols-3 gap-0.5 p-1.5 hover:bg-slate-700 rounded-full cursor-pointer transition group relative">
-                                        <div class="bg-white rounded-full"></div><div class="bg-white rounded-full"></div><div class="bg-white rounded-full"></div>
-                                        <div class="bg-white rounded-full"></div><div class="bg-white rounded-full"></div><div class="bg-white rounded-full"></div>
-                                        <div class="bg-white rounded-full"></div><div class="bg-white rounded-full"></div><div class="bg-white rounded-full"></div>
+                                    <div class="w-10 h-10 grid grid-cols-3 gap-1 p-2 hover:bg-slate-700/50 rounded-full cursor-pointer transition-all group/waffle relative backdrop-blur-sm">
+                                        <div class="bg-white rounded-full shadow-sm"></div><div class="bg-white rounded-full shadow-sm"></div><div class="bg-white rounded-full shadow-sm"></div>
+                                        <div class="bg-white rounded-full shadow-sm"></div><div class="bg-white rounded-full shadow-sm"></div><div class="bg-white rounded-full shadow-sm"></div>
+                                        <div class="bg-white rounded-full shadow-sm"></div><div class="bg-white rounded-full shadow-sm"></div><div class="bg-white rounded-full shadow-sm"></div>
                                         
                                         <!-- Dropdown -->
-                                        <div class="absolute top-10 right-0 bg-white text-slate-800 p-2 rounded-lg shadow-xl w-48 hidden group-hover:grid grid-cols-3 gap-2 z-20">
-                                            <div class="flex flex-col items-center p-1 hover:bg-slate-100 rounded"><div class="w-6 h-6 bg-blue-500 rounded-full text-white flex items-center justify-center text-[10px] font-bold">D</div><span class="text-[8px]">Docs</span></div>
-                                            <div class="flex flex-col items-center p-1 hover:bg-slate-100 rounded"><i class="fa-brands fa-google-drive text-xl text-green-600"></i><span class="text-[8px]">Drive</span></div>
+                                        <div class="absolute top-12 right-0 bg-white text-slate-800 p-3 rounded-xl shadow-2xl w-56 hidden group-hover/waffle:grid grid-cols-3 gap-3 z-20 border border-slate-100 scale-95 group-hover/waffle:scale-100 transition-all origin-top-right">
+                                            <div class="flex flex-col items-center p-2 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"><div class="w-10 h-10 bg-blue-500 rounded-xl text-white flex items-center justify-center text-lg font-bold shadow-md">D</div><span class="text-[11px] font-medium mt-1">Docs</span></div>
+                                            <div class="flex flex-col items-center p-2 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"><div class="w-10 h-10 flex items-center justify-center"><i class="fa-brands fa-google-drive text-3xl text-green-600"></i></div><span class="text-[11px] font-medium mt-1">Drive</span></div>
+                                            <div class="flex flex-col items-center p-2 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"><div class="w-10 h-10 bg-yellow-400 rounded-xl text-white flex items-center justify-center text-lg font-bold shadow-md">S</div><span class="text-[11px] font-medium mt-1">Slides</span></div>
                                         </div>
                                     </div>
-                                    <div class="w-8 h-8 bg-purple-600 rounded-full text-xs flex items-center justify-center font-bold">U</div>
+                                    <div class="w-10 h-10 bg-gradient-to-tr from-purple-600 to-pink-500 rounded-full text-sm flex items-center justify-center font-bold shadow-lg border-2 border-slate-800">U</div>
                                 </div>
-                                <p class="text-sm text-slate-300">Método 1: El Waffle (9 puntos) en Gmail/Google</p>
+                                <p class="text-base text-slate-300 font-medium z-10 relative">Método 1: El Waffle (9 puntos) en Gmail/Google</p>
+                                <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-blue-500/20 rounded-full blur-3xl z-0"></div>
+                                <div class="absolute -top-10 -right-10 w-40 h-40 bg-purple-500/20 rounded-full blur-3xl z-0"></div>
                             </div>
 
-                            <div class="grid md:grid-cols-2 gap-4">
-                                <div class="bg-yellow-50 border border-yellow-200 p-3 rounded-lg text-xs text-yellow-800 flex items-start gap-2">
-                                    <i class="fa-solid fa-bolt mt-0.5"></i>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="bg-yellow-50/80 border border-yellow-200 p-5 rounded-2xl text-sm text-yellow-800 flex items-start gap-4 shadow-sm hover:shadow-md transition-shadow">
+                                    <div class="bg-yellow-100 p-2 rounded-xl shrink-0"><i class="fa-solid fa-bolt text-yellow-600 text-lg"></i></div>
                                     <div><b>Truco Pro:</b> Escribe <code>docs.new</code> en la barra de direcciones para crear un documento en blanco al instante.</div>
                                 </div>
-                                <div class="bg-slate-50 border border-slate-200 p-3 rounded-lg text-xs text-slate-600">
-                                    <b>Galería de Plantillas:</b> Úsalas para CVs o folletos y ahorra horas de diseño.
+                                <div class="bg-slate-50/80 border border-slate-200 p-5 rounded-2xl text-sm text-slate-600 flex items-start gap-4 shadow-sm hover:shadow-md transition-shadow">
+                                    <div class="bg-slate-200 p-2 rounded-xl shrink-0"><i class="fa-solid fa-shapes text-slate-600 text-lg"></i></div>
+                                    <div><b>Galería de Plantillas:</b> Úsalas para CVs o folletos y ahorra horas de diseño.</div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Simulación Pantalla de Inicio Docs -->
-                        <div class="glass-card p-6">
-                            <h3 class="text-lg font-bold text-slate-800 mb-4">El Dashboard (Pantalla de Inicio)</h3>
-                            <p class="text-xs text-slate-500 mb-4">Esta es la interfaz que verás inmediatamente después de ingresar. Es tu centro de control.</p>
+                        <div class="glass-card p-8">
+                            <h3 class="text-2xl font-bold text-slate-800 mb-6">El Dashboard (Pantalla de Inicio)</h3>
+                            <p class="text-sm text-slate-500 mb-6">Esta es la interfaz que verás inmediatamente después de ingresar. Es tu centro de control.</p>
 
-                            <div class="bg-white rounded-xl border border-slate-200 overflow-hidden relative min-h-[300px] flex flex-col shadow-inner">
+                            <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden relative min-h-[380px] flex flex-col shadow-xl transition-all hover:shadow-2xl">
                                 <!-- Top Bar -->
-                                <div class="bg-white p-3 flex items-center justify-between border-b border-slate-100">
-                                    <div class="flex items-center gap-3">
-                                        <i class="fa-solid fa-bars text-slate-500 text-lg"></i>
-                                        <div class="flex items-center gap-2 text-slate-700 font-medium text-sm">
-                                            <i class="fa-solid fa-file-lines text-blue-600 text-xl"></i> <span class="hidden sm:inline">Documentos</span>
+                                <div class="bg-white px-5 py-4 flex items-center justify-between border-b border-slate-100">
+                                    <div class="flex items-center gap-4">
+                                        <i class="fa-solid fa-bars text-slate-500 text-xl cursor-pointer hover:text-slate-700 transition-colors"></i>
+                                        <div class="flex items-center gap-3 text-slate-700 font-semibold text-base">
+                                            <i class="fa-solid fa-file-lines text-blue-600 text-2xl"></i> <span class="hidden sm:inline">Documentos</span>
                                         </div>
                                     </div>
-                                    <div class="flex-1 mx-4 max-w-lg hidden md:block">
-                                        <div class="bg-slate-100 rounded-lg px-4 py-2 flex items-center text-slate-500 text-xs">
-                                            <i class="fa-solid fa-magnifying-glass mr-2"></i> Búsqueda
+                                    <div class="flex-1 mx-8 max-w-2xl hidden md:block">
+                                        <div class="bg-slate-100 rounded-xl px-5 py-3 flex items-center text-slate-500 text-sm hover:bg-slate-200/70 transition-colors cursor-text shadow-inner">
+                                            <i class="fa-solid fa-magnifying-glass mr-3"></i> Búsqueda
                                         </div>
                                     </div>
-                                    <div class="flex items-center gap-3 text-slate-500">
-                                        <i class="fa-solid fa-grip text-lg"></i>
-                                        <div class="w-8 h-8 bg-purple-600 rounded-full text-white flex items-center justify-center text-xs font-bold">U</div>
+                                    <div class="flex items-center gap-4 text-slate-500">
+                                        <i class="fa-solid fa-grip text-xl cursor-pointer hover:text-slate-700 transition-colors"></i>
+                                        <div class="w-10 h-10 bg-gradient-to-tr from-purple-600 to-pink-500 rounded-full text-white flex items-center justify-center text-sm font-bold shadow-md cursor-pointer hover:shadow-lg transition-shadow">U</div>
                                     </div>
                                 </div>
 
                                 <!-- Template Gallery Section (Gray BG) -->
-                                <div class="bg-slate-50 p-4 pb-8 border-b border-slate-200">
-                                    <div class="flex justify-between items-center mb-3 max-w-4xl mx-auto">
-                                        <span class="text-slate-600 text-xs font-medium">Crear un documento</span>
-                                        <div class="flex items-center gap-2 text-slate-500 text-[10px] cursor-pointer hover:bg-slate-200 px-2 py-1 rounded transition">
+                                <div class="bg-slate-50/80 px-6 py-6 pb-10 border-b border-slate-200/80">
+                                    <div class="flex justify-between items-center mb-5 max-w-5xl mx-auto">
+                                        <span class="text-slate-700 text-sm font-semibold">Crear un documento</span>
+                                        <div class="flex items-center gap-2 text-slate-500 text-xs cursor-pointer hover:bg-slate-200/70 px-3 py-2 rounded-lg transition-all font-medium">
                                             <span>Galería de plantillas</span>
                                             <i class="fa-solid fa-sort"></i>
                                         </div>
                                     </div>
                                     
-                                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 max-w-4xl mx-auto">
+                                    <div class="grid grid-cols-2 md:grid-cols-5 gap-6 max-w-5xl mx-auto">
                                         <!-- Blank -->
                                         <div class="group cursor-pointer">
-                                            <div class="bg-white border hover:border-blue-500 rounded h-28 flex items-center justify-center shadow-sm transition-colors">
-                                                <i class="fa-solid fa-plus text-4xl text-transparent bg-clip-text bg-gradient-to-tr from-red-500 via-yellow-500 to-blue-500"></i>
+                                            <div class="bg-white border-2 border-slate-200 hover:border-blue-500 rounded-xl h-36 flex items-center justify-center shadow-sm transition-all group-hover:shadow-md group-hover:-translate-y-1 relative overflow-hidden">
+                                                <div class="absolute inset-0 bg-gradient-to-tr from-blue-50 to-white opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                                <i class="fa-solid fa-plus text-5xl text-transparent bg-clip-text bg-gradient-to-tr from-red-500 via-yellow-500 to-blue-500 relative z-10 transition-transform group-hover:scale-110"></i>
                                             </div>
-                                            <span class="text-[10px] font-bold text-slate-700 mt-2 block">En blanco</span>
+                                            <span class="text-xs font-bold text-slate-700 mt-3 block text-center">En blanco</span>
                                         </div>
                                         <!-- CV -->
                                         <div class="group cursor-pointer hidden md:block">
-                                            <div class="bg-white border hover:border-blue-500 rounded h-28 p-2 shadow-sm transition-colors overflow-hidden relative">
-                                                <div class="h-1 w-1/3 bg-slate-300 mb-1"></div>
-                                                <div class="h-1 w-full bg-slate-200 mb-1"></div>
-                                                <div class="h-1 w-full bg-slate-200 mb-1"></div>
-                                                <div class="h-1 w-2/3 bg-slate-200"></div>
+                                            <div class="bg-white border-2 border-slate-200 hover:border-blue-500 rounded-xl h-36 p-3 shadow-sm transition-all group-hover:shadow-md group-hover:-translate-y-1 overflow-hidden relative">
+                                                <div class="absolute inset-0 bg-gradient-to-tr from-slate-50 to-white opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                                <div class="h-1.5 w-1/3 bg-slate-300 mb-2 rounded-full"></div>
+                                                <div class="h-1.5 w-full bg-slate-200 mb-2 rounded-full"></div>
+                                                <div class="h-1.5 w-full bg-slate-200 mb-2 rounded-full"></div>
+                                                <div class="h-1.5 w-2/3 bg-slate-200 rounded-full"></div>
                                             </div>
-                                            <span class="text-[10px] font-bold text-slate-700 mt-2 block">Currículum</span>
-                                            <span class="text-[9px] text-slate-400 block">Serif</span>
+                                            <span class="text-xs font-bold text-slate-700 mt-3 block">Currículum</span>
+                                            <span class="text-[10px] text-slate-400 block">Serif</span>
                                         </div>
                                         <!-- Carta -->
                                         <div class="group cursor-pointer hidden md:block">
-                                            <div class="bg-white border hover:border-blue-500 rounded h-28 p-2 shadow-sm transition-colors overflow-hidden relative">
-                                                <div class="h-1 w-1/4 bg-green-500 mb-2"></div>
-                                                <div class="space-y-1">
-                                                    <div class="h-0.5 w-full bg-slate-200"></div>
-                                                    <div class="h-0.5 w-full bg-slate-200"></div>
-                                                    <div class="h-0.5 w-full bg-slate-200"></div>
+                                            <div class="bg-white border-2 border-slate-200 hover:border-blue-500 rounded-xl h-36 p-3 shadow-sm transition-all group-hover:shadow-md group-hover:-translate-y-1 overflow-hidden relative">
+                                                <div class="absolute inset-0 bg-gradient-to-tr from-green-50 to-white opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                                <div class="h-1.5 w-1/4 bg-green-500 mb-3 rounded-full"></div>
+                                                <div class="space-y-2">
+                                                    <div class="h-1 w-full bg-slate-200 rounded-full"></div>
+                                                    <div class="h-1 w-full bg-slate-200 rounded-full"></div>
+                                                    <div class="h-1 w-full bg-slate-200 rounded-full"></div>
                                                 </div>
                                             </div>
-                                            <span class="text-[10px] font-bold text-slate-700 mt-2 block">Carta</span>
-                                            <span class="text-[9px] text-slate-400 block">Menta</span>
+                                            <span class="text-xs font-bold text-slate-700 mt-3 block">Carta</span>
+                                            <span class="text-[10px] text-slate-400 block">Menta</span>
                                         </div>
                                         <!-- Folleto -->
                                         <div class="group cursor-pointer hidden md:block">
-                                            <div class="bg-white border hover:border-blue-500 rounded h-28 shadow-sm transition-colors overflow-hidden relative flex flex-col">
-                                                <div class="h-1/2 bg-slate-100 flex items-center justify-center"><div class="w-6 h-6 bg-red-400 rounded-full opacity-50"></div></div>
-                                                <div class="p-2">
-                                                    <div class="h-1 w-full bg-slate-200"></div>
+                                            <div class="bg-white border-2 border-slate-200 hover:border-blue-500 rounded-xl h-36 shadow-sm transition-all group-hover:shadow-md group-hover:-translate-y-1 overflow-hidden relative flex flex-col">
+                                                <div class="absolute inset-0 bg-gradient-to-tr from-red-50 to-white opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                                <div class="h-1/2 bg-slate-100 flex items-center justify-center relative z-10"><div class="w-8 h-8 bg-red-400 rounded-full opacity-50 shadow-sm"></div></div>
+                                                <div class="p-3 relative z-10">
+                                                    <div class="h-1.5 w-full bg-slate-200 rounded-full"></div>
                                                 </div>
                                             </div>
-                                            <span class="text-[10px] font-bold text-slate-700 mt-2 block">Folleto</span>
-                                            <span class="text-[9px] text-slate-400 block">Geométrico</span>
+                                            <span class="text-xs font-bold text-slate-700 mt-3 block">Folleto</span>
+                                            <span class="text-[10px] text-slate-400 block">Geométrico</span>
                                         </div>
                                         <!-- Informe -->
                                         <div class="group cursor-pointer hidden md:block">
-                                            <div class="bg-white border hover:border-blue-500 rounded h-28 p-2 shadow-sm transition-colors overflow-hidden relative">
-                                                <div class="text-[6px] font-serif text-slate-800 mb-1">INFORME</div>
-                                                <div class="h-14 bg-orange-100 mb-1 w-full"></div>
+                                            <div class="bg-white border-2 border-slate-200 hover:border-blue-500 rounded-xl h-36 p-3 shadow-sm transition-all group-hover:shadow-md group-hover:-translate-y-1 overflow-hidden relative">
+                                                <div class="absolute inset-0 bg-gradient-to-tr from-orange-50 to-white opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                                <div class="text-[8px] font-serif font-bold text-slate-800 mb-2 tracking-widest">INFORME</div>
+                                                <div class="h-20 bg-orange-100 w-full rounded-lg shadow-inner"></div>
                                             </div>
-                                            <span class="text-[10px] font-bold text-slate-700 mt-2 block">Informe</span>
-                                            <span class="text-[9px] text-slate-400 block">Lujo</span>
+                                            <span class="text-xs font-bold text-slate-700 mt-3 block">Informe</span>
+                                            <span class="text-[10px] text-slate-400 block">Lujo</span>
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- Recent Docs Section -->
-                                <div class="bg-white p-4 flex-1">
-                                    <div class="flex justify-between items-center max-w-4xl mx-auto mb-4">
-                                        <span class="text-slate-700 text-xs font-medium">Documentos recientes</span>
-                                        <div class="flex items-center gap-4 text-slate-500 text-[10px]">
-                                            <span class="flex items-center gap-1 cursor-pointer hover:bg-slate-100 px-2 py-1 rounded">Cualquiera es el propietario <i class="fa-solid fa-caret-down"></i></span>
-                                            <div class="flex gap-3 text-slate-400">
-                                                <i class="fa-solid fa-list cursor-pointer hover:text-slate-600"></i>
-                                                <i class="fa-solid fa-arrow-down-z-a cursor-pointer hover:text-slate-600"></i>
-                                                <i class="fa-regular fa-folder cursor-pointer hover:text-slate-600"></i>
+                                <div class="bg-white p-6 flex-1">
+                                    <div class="flex justify-between items-center max-w-5xl mx-auto mb-6">
+                                        <span class="text-slate-800 text-sm font-semibold">Documentos recientes</span>
+                                        <div class="flex items-center gap-6 text-slate-500 text-xs">
+                                            <span class="flex items-center gap-2 cursor-pointer hover:bg-slate-100 px-3 py-2 rounded-lg transition-all font-medium">Cualquiera es el propietario <i class="fa-solid fa-caret-down"></i></span>
+                                            <div class="flex gap-4 text-slate-400">
+                                                <i class="fa-solid fa-list cursor-pointer hover:text-slate-600 transition-colors text-base"></i>
+                                                <i class="fa-solid fa-arrow-down-z-a cursor-pointer hover:text-slate-600 transition-colors text-base"></i>
+                                                <i class="fa-regular fa-folder cursor-pointer hover:text-slate-600 transition-colors text-base"></i>
                                             </div>
                                         </div>
                                     </div>
                                     <!-- Empty state -->
-                                    <div class="max-w-4xl mx-auto text-center py-6 text-slate-300 text-xs">
-                                        <i class="fa-regular fa-file-lines text-2xl mb-2"></i>
-                                        <p>No hay documentos recientes</p>
+                                    <div class="max-w-5xl mx-auto text-center py-12 text-slate-300 flex flex-col items-center justify-center">
+                                        <div class="bg-slate-50 p-6 rounded-full mb-4">
+                                            <i class="fa-regular fa-file-lines text-4xl text-slate-300"></i>
+                                        </div>
+                                        <p class="text-sm font-medium">No hay documentos recientes</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Interfaz Edición -->
-                        <div class="glass-card p-6">
-                            <h3 class="text-lg font-bold text-slate-800 mb-4">La Interfaz de Edición</h3>
-                            <div class="relative bg-white border rounded-xl p-2 shadow-sm text-xs">
+                        <div class="glass-card p-8">
+                            <h3 class="text-2xl font-bold text-slate-800 mb-6">La Interfaz de Edición</h3>
+                            <div class="relative bg-white border-2 border-slate-200 rounded-2xl p-3 shadow-lg text-xs transition-all hover:shadow-xl">
                                 <!-- Menu Bar -->
-                                <div class="flex gap-4 border-b pb-2 mb-2 text-slate-600 font-medium">
-                                    <span class="bg-blue-50 text-blue-700 px-2 rounded">Menú (Archivo, Editar...)</span>
-                                    <span class="text-slate-400">Controles de archivo</span>
+                                <div class="flex gap-6 border-b border-slate-100 pb-3 mb-3 text-slate-600 font-medium">
+                                    <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-md shadow-sm">Menú (Archivo, Editar...)</span>
+                                    <span class="text-slate-400 py-1">Controles de archivo</span>
                                 </div>
                                 <!-- Iconos Rápidos -->
-                                <div class="flex gap-2 items-center bg-slate-50 p-1 rounded mb-2">
-                                    <span class="bg-blue-50 text-blue-700 px-2 rounded mr-2">Barra Herramientas</span>
-                                    <i class="fa-solid fa-bold p-1 text-slate-400"></i>
-                                    <i class="fa-solid fa-align-left p-1 text-slate-400"></i>
-                                    <span class="text-[10px] text-slate-400 ml-auto">Acciones rápidas</span>
+                                <div class="flex gap-3 items-center bg-slate-50 p-2 rounded-xl mb-3 border border-slate-100">
+                                    <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-md shadow-sm mr-2">Barra Herramientas</span>
+                                    <i class="fa-solid fa-bold p-1.5 text-slate-400 bg-white rounded-md shadow-sm border border-slate-100"></i>
+                                    <i class="fa-solid fa-align-left p-1.5 text-slate-400 bg-white rounded-md shadow-sm border border-slate-100"></i>
+                                    <span class="text-[10px] text-slate-400 ml-auto font-medium">Acciones rápidas</span>
                                 </div>
                                 <!-- Canvas -->
-                                <div class="h-24 bg-white border border-dashed border-slate-200 flex relative">
-                                    <div class="absolute left-0 top-0 bottom-0 w-8 bg-slate-50 border-r flex flex-col items-center pt-2 text-[8px] text-slate-500 gap-1">
-                                        <i class="fa-solid fa-list-ul text-blue-500"></i>
+                                <div class="h-32 bg-white border-2 border-dashed border-slate-300 rounded-xl flex relative overflow-hidden">
+                                    <div class="absolute left-0 top-0 bottom-0 w-10 bg-slate-50 border-r border-slate-200 flex flex-col items-center pt-3 text-[9px] text-slate-500 gap-2 font-bold">
+                                        <i class="fa-solid fa-list-ul text-blue-500 text-sm"></i>
                                         <span>Esq</span>
                                     </div>
-                                    <div class="absolute right-0 top-0 bottom-0 w-8 bg-white border-l flex flex-col items-center pt-2 gap-2">
-                                        <div class="w-4 h-4 bg-yellow-200 rounded-full cursor-pointer" title="Keep"></div>
-                                        <div class="w-4 h-4 bg-blue-400 rounded-full cursor-pointer" title="Tasks"></div>
+                                    <div class="absolute right-0 top-0 bottom-0 w-10 bg-white border-l border-slate-200 flex flex-col items-center pt-3 gap-3">
+                                        <div class="w-5 h-5 bg-yellow-200 rounded-full cursor-pointer shadow-sm border border-yellow-300 hover:scale-110 transition-transform" title="Keep"></div>
+                                        <div class="w-5 h-5 bg-blue-400 rounded-full cursor-pointer shadow-sm border border-blue-500 hover:scale-110 transition-transform" title="Tasks"></div>
                                     </div>
                                     
-                                    <div class="flex-1 p-2">
-                                        <div class="w-full h-2 bg-slate-100 mb-1 rounded relative">
-                                            <div class="absolute -top-1 left-4 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-b-[6px] border-b-blue-500"></div>
-                                            <div class="absolute -top-3 left-10 text-[8px] text-blue-500 font-bold">Regla & Márgenes</div>
+                                    <div class="flex-1 p-4 ml-10 mr-10 bg-white relative">
+                                        <div class="w-full h-2.5 bg-slate-100 mb-2 rounded-full relative shadow-inner border border-slate-200/50">
+                                            <div class="absolute -top-1.5 left-6 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-b-[8px] border-b-blue-600"></div>
+                                            <div class="absolute -top-5 left-12 text-[9px] text-blue-600 font-bold uppercase tracking-wider bg-blue-50 px-1 rounded-sm shadow-sm">Regla & Márgenes</div>
                                         </div>
-                                        <div class="text-slate-300 text-[10px] mt-4 text-center">Área de Documento</div>
+                                        <div class="text-slate-300 text-xs mt-6 text-center font-medium uppercase tracking-widest">Área de Documento</div>
+                                        <div class="absolute inset-0 bg-gradient-to-b from-white via-transparent to-white pointer-events-none"></div>
                                     </div>
                                 </div>
                             </div>
@@ -448,373 +469,407 @@
                 </div>
 
                 <!-- Botón Siguiente -->
-                <div class="mt-12 flex justify-end pb-4">
+                <div class="mt-16 flex justify-end pb-8">
                     <button onclick="switchTab(2)" class="btn-continue group">
-                        <span>Continuar</span> 
-                        <i class="fa-solid fa-arrow-right text-slate-400 group-hover:text-white"></i>
+                        <span>Continuar al Módulo 2</span> 
+                        <i class="fa-solid fa-arrow-right-long group-hover:text-white"></i>
                     </button>
                 </div>
             </section>
 
             <!-- MÓDULO 2: EDICIÓN -->
-            <section id="view-2" class="max-w-6xl mx-auto hidden fade-in">
-                <div class="text-center mb-10">
-                    <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Módulo 2</span>
-                    <h2 class="text-4xl font-bold text-slate-800 brand-font mt-2">Edición y Formato Profesional</h2>
+            <section id="view-2" class="max-w-[90rem] mx-auto hidden fade-in">
+                <div class="text-center mb-12">
+                    <span class="bg-indigo-100 text-indigo-700 px-4 py-1.5 rounded-full text-sm font-bold uppercase tracking-wide shadow-sm">Módulo 2</span>
+                    <h2 class="text-5xl font-extrabold text-slate-800 brand-font mt-4 tracking-tight">Edición y Formato Profesional</h2>
                 </div>
 
-                <div class="glass-card p-8 mb-8">
+                <div class="glass-card p-10 mb-10">
                     <!-- SIMULADOR DE LIMPIEZA -->
-                    <div class="flex flex-col md:flex-row gap-8 items-start">
+                    <div class="flex flex-col md:flex-row gap-10 items-start">
                         <div class="flex-1 w-full">
-                            <h3 class="text-xl font-bold text-slate-800 mb-2">Manipulación de Texto</h3>
-                            <p class="text-sm text-slate-500 mb-4">El error más común: Copiar "sucio" de internet.</p>
+                            <h3 class="text-2xl font-bold text-slate-800 mb-3">Manipulación de Texto</h3>
+                            <p class="text-base text-slate-500 mb-6">El error más común: Copiar "sucio" de internet. Mira la diferencia.</p>
                             
-                            <div class="bg-white border rounded-xl p-1 shadow-inner relative">
-                                <div class="bg-slate-50 border-b p-2 flex gap-2 items-center justify-between">
-                                    <span class="text-xs font-bold text-slate-400 uppercase">Simulador</span>
-                                    <button onclick="cleanText()" class="px-3 py-1 bg-white border shadow-sm rounded text-xs font-bold hover:bg-indigo-50 text-indigo-600 transition interactive-btn flex items-center gap-2">
-                                        <i class="fa-solid fa-eraser"></i> Borrar Formato (T tachada)
+                            <div class="bg-white border-2 border-slate-200 rounded-2xl p-1 shadow-lg relative overflow-hidden group">
+                                <div class="bg-slate-50/80 border-b border-slate-200/80 p-3 flex gap-4 items-center justify-between rounded-t-xl">
+                                    <span class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-terminal"></i> Simulador</span>
+                                    <button onclick="cleanText()" class="px-4 py-2 bg-white border-2 border-indigo-100 shadow-sm rounded-xl text-xs font-bold hover:bg-indigo-50 hover:border-indigo-300 text-indigo-600 transition-all interactive-btn flex items-center gap-2">
+                                        <i class="fa-solid fa-eraser text-sm"></i> Borrar Formato (T tachada)
                                     </button>
                                 </div>
-                                <div class="p-6 min-h-[120px] relative">
-                                    <div id="dirty-text" class="transition-all duration-500 text-lg">
-                                        <span class="bg-slate-200 font-serif">Texto copiado de Wikipedia</span> con <a href="#" class="text-blue-600 underline">enlaces raros</a> y <span class="bg-yellow-200 font-mono">fondos de color</span>.
+                                <div class="p-8 min-h-[140px] relative bg-slate-50/30">
+                                    <div id="dirty-text" class="transition-all duration-700 text-xl leading-relaxed">
+                                        <span class="bg-slate-300/50 font-serif p-1 rounded-sm border border-slate-300/50">Texto copiado de Wikipedia</span> con <a href="#" class="text-blue-700 underline decoration-2 decoration-blue-300 hover:text-blue-800 bg-blue-50 p-1 rounded-sm">enlaces raros</a> y <span class="bg-yellow-200/70 font-mono p-1 rounded-sm border border-yellow-300/50">fondos de color</span> molestos.
                                     </div>
-                                    <div id="clean-feedback" class="absolute bottom-2 right-2 text-xs font-bold text-green-500 opacity-0 transition-opacity">¡Limpieza completada! ✨</div>
+                                    <div id="clean-feedback" class="absolute bottom-4 right-4 text-sm font-bold text-green-600 opacity-0 transition-all duration-500 bg-green-50 px-3 py-1.5 rounded-lg shadow-sm border border-green-200 flex items-center gap-2">
+                                        <i class="fa-solid fa-check-circle"></i> ¡Limpieza completada! ✨
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="w-full md:w-72 space-y-4">
-                            <div class="p-4 rounded-xl border border-red-100 bg-red-50/50">
-                                <h4 class="font-bold text-red-800 mb-1 text-sm"><i class="fa-solid fa-xmark mr-1"></i> Ctrl + V (Normal)</h4>
-                                <p class="text-xs text-slate-600">
-                                    Arrastra fondos grises, tipografías raras y enlaces rotos.
+                        <div class="w-full md:w-80 space-y-6">
+                            <div class="p-6 rounded-2xl border-2 border-red-100 bg-red-50/60 shadow-sm hover:shadow-md transition-shadow">
+                                <h4 class="font-bold text-red-800 mb-2 text-base flex items-center gap-2"><i class="fa-solid fa-xmark-circle text-lg"></i> Ctrl + V (Normal)</h4>
+                                <p class="text-sm text-slate-600 leading-relaxed">
+                                    Arrastra fondos grises, tipografías raras y enlaces rotos. <span class="font-bold">No lo hagas.</span>
                                 </p>
                             </div>
-                            <div class="p-4 rounded-xl border border-green-100 bg-green-50/50">
-                                <h4 class="font-bold text-green-800 mb-1 text-sm"><i class="fa-solid fa-check mr-1"></i> Ctrl + Shift + V</h4>
-                                <p class="text-xs text-slate-600">
-                                    "Pegar sin formato". La solución limpia que usan los profesionales.
+                            <div class="p-6 rounded-2xl border-2 border-green-100 bg-green-50/60 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
+                                <div class="absolute top-0 right-0 -mt-4 -mr-4 bg-green-200/50 w-20 h-20 rounded-full blur-2xl"></div>
+                                <h4 class="font-bold text-green-800 mb-2 text-base flex items-center gap-2 relative z-10"><i class="fa-solid fa-check-circle text-lg"></i> Ctrl + Shift + V</h4>
+                                <p class="text-sm text-slate-600 leading-relaxed relative z-10">
+                                    "Pegar sin formato". La solución limpia que usan los profesionales. <span class="font-bold">Tu nuevo mejor amigo.</span>
                                 </p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="grid md:grid-cols-3 gap-6">
-                    <div class="glass-card p-6 rich-text">
-                        <h4 class="font-bold text-slate-700 mb-2"><i class="fa-solid fa-font text-indigo-500 mr-2"></i>Tipografía</h4>
-                        <p>No te limites a Arial.</p>
-                        <ul>
-                            <li>Usa el botón <b>"Más fuentes"</b> para agregar tipografías modernas como Montserrat o Roboto.</li>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="glass-card p-8 rich-text border-t-4 border-t-indigo-500 hover:-translate-y-2">
+                        <h4 class="font-bold text-slate-800 mb-4 text-xl flex items-center gap-3"><div class="bg-indigo-100 p-2 rounded-lg"><i class="fa-solid fa-font text-indigo-600"></i></div> Tipografía</h4>
+                        <p class="text-base">No te limites a Arial.</p>
+                        <ul class="mt-4 space-y-3">
+                            <li class="flex items-start gap-3"><i class="fa-solid fa-arrow-right text-indigo-400 mt-1.5 text-sm"></i><div>Usa el botón <b>"Más fuentes"</b> para agregar tipografías modernas como Montserrat o Roboto.</div></li>
                         </ul>
                     </div>
-                    <div class="glass-card p-6 rich-text">
-                        <h4 class="font-bold text-slate-700 mb-2"><i class="fa-solid fa-align-justify text-indigo-500 mr-2"></i>Párrafo</h4>
-                        <ul>
-                            <li><b>Justificado:</b> Obligatorio para documentos formales.</li>
-                            <li><b>Sangría:</b> Usa el triángulo azul de la regla (no la barra espaciadora).</li>
-                            <li><b>Espaciado:</b> Usa "Añadir espacio después del párrafo" para que respire.</li>
+                    <div class="glass-card p-8 rich-text border-t-4 border-t-purple-500 hover:-translate-y-2">
+                        <h4 class="font-bold text-slate-800 mb-4 text-xl flex items-center gap-3"><div class="bg-purple-100 p-2 rounded-lg"><i class="fa-solid fa-align-justify text-purple-600"></i></div> Párrafo</h4>
+                        <ul class="mt-4 space-y-3">
+                            <li class="flex items-start gap-3"><i class="fa-solid fa-arrow-right text-purple-400 mt-1.5 text-sm"></i><div><b>Justificado:</b> Obligatorio para documentos formales.</div></li>
+                            <li class="flex items-start gap-3"><i class="fa-solid fa-arrow-right text-purple-400 mt-1.5 text-sm"></i><div><b>Sangría:</b> Usa el triángulo azul de la regla (no la barra espaciadora).</div></li>
+                            <li class="flex items-start gap-3"><i class="fa-solid fa-arrow-right text-purple-400 mt-1.5 text-sm"></i><div><b>Espaciado:</b> Usa "Añadir espacio después del párrafo" para que respire.</div></li>
                         </ul>
                     </div>
-                    <div class="glass-card p-6 rich-text">
-                        <h4 class="font-bold text-slate-700 mb-2"><i class="fa-solid fa-heading text-indigo-500 mr-2"></i>Estilos</h4>
-                        <p><b>Concepto Clave:</b> "Título 1" no es solo tamaño.</p>
-                        <ul>
-                            <li>Son etiquetas de estructura.</li>
-                            <li>Permiten generar el <b>Índice Automático</b> después.</li>
-                            <li>Aparecen en el esquema de navegación (izquierda).</li>
+                    <div class="glass-card p-8 rich-text border-t-4 border-t-pink-500 hover:-translate-y-2">
+                        <h4 class="font-bold text-slate-800 mb-4 text-xl flex items-center gap-3"><div class="bg-pink-100 p-2 rounded-lg"><i class="fa-solid fa-heading text-pink-600"></i></div> Estilos</h4>
+                        <p class="text-base"><b>Concepto Clave:</b> "Título 1" no es solo tamaño.</p>
+                        <ul class="mt-4 space-y-3">
+                            <li class="flex items-start gap-3"><i class="fa-solid fa-arrow-right text-pink-400 mt-1.5 text-sm"></i><div>Son etiquetas de estructura semántica.</div></li>
+                            <li class="flex items-start gap-3"><i class="fa-solid fa-arrow-right text-pink-400 mt-1.5 text-sm"></i><div>Permiten generar el <b>Índice Automático</b> después.</div></li>
+                            <li class="flex items-start gap-3"><i class="fa-solid fa-arrow-right text-pink-400 mt-1.5 text-sm"></i><div>Aparecen en el esquema de navegación (barra lateral izquierda).</div></li>
                         </ul>
                     </div>
                 </div>
 
                 <!-- Botón Siguiente -->
-                <div class="mt-12 flex justify-end pb-4">
+                <div class="mt-16 flex justify-end pb-8">
                     <button onclick="switchTab(3)" class="btn-continue group">
-                        <span>Siguiente Lección</span> 
-                        <i class="fa-solid fa-arrow-right text-slate-400 group-hover:text-white"></i>
+                        <span>Continuar al Módulo 3</span> 
+                        <i class="fa-solid fa-arrow-right-long group-hover:text-white"></i>
                     </button>
                 </div>
             </section>
 
             <!-- MÓDULO 3: DISEÑO -->
-            <section id="view-3" class="max-w-6xl mx-auto hidden fade-in">
-                <div class="text-center mb-10">
-                    <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Módulo 3</span>
-                    <h2 class="text-4xl font-bold text-slate-800 brand-font mt-2">Diseño Visual y Estructura</h2>
+            <section id="view-3" class="max-w-[90rem] mx-auto hidden fade-in">
+                <div class="text-center mb-12">
+                    <span class="bg-indigo-100 text-indigo-700 px-4 py-1.5 rounded-full text-sm font-bold uppercase tracking-wide shadow-sm">Módulo 3</span>
+                    <h2 class="text-5xl font-extrabold text-slate-800 brand-font mt-4 tracking-tight">Diseño Visual y Estructura</h2>
                 </div>
 
-                <div class="grid lg:grid-cols-2 gap-8">
+                <div class="grid lg:grid-cols-2 gap-10">
                     <!-- Imágenes Interactiva -->
-                    <div class="glass-card p-8 bg-white relative overflow-hidden group">
-                        <h3 class="text-xl font-bold text-slate-800 mb-2">Imágenes y Ajuste</h3>
-                        <p class="text-sm text-slate-500 mb-6">
+                    <div class="glass-card p-10 bg-white relative overflow-hidden group">
+                        <h3 class="text-2xl font-bold text-slate-800 mb-3">Imágenes y Ajuste</h3>
+                        <p class="text-base text-slate-500 mb-8">
                             Problema común: La imagen "rompe" el texto. Solución: Ajustar texto.
                         </p>
                         
                         <!-- Demo Imagen -->
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 relative min-h-[200px]">
-                            <p class="text-xs text-slate-400 text-justify leading-relaxed mb-2">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        <div class="bg-slate-50 p-6 rounded-2xl border-2 border-slate-200 relative min-h-[280px] shadow-inner transition-all group-hover:shadow-md">
+                            <p class="text-sm text-slate-500 text-justify leading-loose mb-4 font-medium">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
                             </p>
                             
-                            <div id="demo-img" class="w-24 h-24 bg-indigo-500 rounded-lg shadow-lg text-white flex items-center justify-center text-xs font-bold absolute top-10 right-10 transition-all duration-500 z-10 cursor-pointer border-4 border-white hover:scale-105" onclick="toggleImgWrap()">
-                                <i class="fa-regular fa-image text-2xl mb-1 block"></i> Clickeame
+                            <div id="demo-img" class="w-32 h-32 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl shadow-xl text-white flex flex-col items-center justify-center text-sm font-bold absolute top-12 right-12 transition-all duration-500 cubic-bezier(0.4, 0, 0.2, 1) z-10 cursor-pointer border-4 border-white hover:scale-110 hover:rotate-3 group/img">
+                                <i class="fa-regular fa-image text-3xl mb-2 block group-hover/img:scale-110 transition-transform"></i> <span>Clickeame</span>
                             </div>
                             
-                            <p class="text-xs text-slate-400 text-justify leading-relaxed">
-                                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.
+                            <p class="text-sm text-slate-500 text-justify leading-loose font-medium">
+                                Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
                             </p>
                             
-                            <div id="wrap-btn" class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-3 py-1 rounded-full text-[10px] opacity-0 transition-opacity font-bold">Modo: Ajustar Texto Activado</div>
+                            <div id="wrap-btn" class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-slate-800/90 backdrop-blur-sm text-white px-5 py-2 rounded-full text-xs opacity-0 transition-all duration-500 font-bold uppercase tracking-wider shadow-lg scale-90">Modo: Ajustar Texto Activado</div>
                         </div>
                         
-                        <div class="mt-4 bg-yellow-50 p-3 rounded-lg text-xs text-yellow-800 border border-yellow-100">
-                            <b>Inserción Rápida:</b> Usa <code>Insertar > Imagen > Buscar en la web</code>. Busca "Gato" y arrástralo sin salir de Google Docs.
+                        <div class="mt-6 bg-yellow-50/80 p-5 rounded-xl text-sm text-yellow-800 border border-yellow-200 shadow-sm flex gap-4 items-start">
+                            <div class="bg-yellow-100 p-2 rounded-lg shrink-0"><i class="fa-solid fa-lightbulb text-yellow-600 text-lg"></i></div>
+                            <div><b>Inserción Rápida:</b> Usa <code>Insertar > Imagen > Buscar en la web</code>. Busca "Gato" y arrástralo sin salir de Google Docs.</div>
                         </div>
-                        <div class="mt-2 text-xs text-slate-500">
-                            <b>Marcas de Agua:</b> Pon un logo tenue detrás del texto para documentos "Confidenciales".
+                        <div class="mt-4 text-xs text-slate-500 flex items-center gap-2 ml-2">
+                            <i class="fa-solid fa-info-circle text-slate-400"></i> <b>Marcas de Agua:</b> Pon un logo tenue detrás del texto para documentos "Confidenciales".
                         </div>
                     </div>
 
                     <!-- Organización -->
-                    <div class="space-y-6">
-                        <div class="glass-card p-6">
-                            <h3 class="text-lg font-bold text-slate-800 mb-2"><i class="fa-solid fa-table text-indigo-500 mr-2"></i>Truco: Tabla Invisible</h3>
-                            <p class="text-xs text-slate-500 mb-3">Para diagramar como una revista (Texto al lado de Imagen):</p>
-                            <ol class="list-decimal pl-4 text-xs text-slate-600 space-y-1 mb-3">
-                                <li>Crea una tabla de 2x1.</li>
-                                <li>Pon texto a un lado e imagen al otro.</li>
-                                <li>Pon los bordes en color blanco (0pt).</li>
+                    <div class="space-y-8">
+                        <div class="glass-card p-8">
+                            <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-3"><div class="bg-indigo-100 p-2 rounded-lg"><i class="fa-solid fa-table text-indigo-600"></i></div> Truco: Tabla Invisible</h3>
+                            <p class="text-sm text-slate-500 mb-5 leading-relaxed">Para diagramar como una revista (Texto al lado de Imagen):</p>
+                            <ol class="list-decimal pl-6 text-sm text-slate-600 space-y-3 mb-6 font-medium">
+                                <li class="pl-2">Crea una tabla de 2x1.</li>
+                                <li class="pl-2">Pon texto a un lado e imagen al otro.</li>
+                                <li class="pl-2">Pon los bordes en color blanco (0pt).</li>
                             </ol>
-                            <div class="border border-dashed border-slate-300 p-2 rounded bg-slate-50 flex gap-2 opacity-70">
-                                <div class="flex-1 h-10 bg-slate-200 rounded flex items-center justify-center text-[10px]">Texto</div>
-                                <div class="flex-1 h-10 bg-slate-200 rounded flex items-center justify-center text-[10px]">Img</div>
+                            <div class="border-2 border-dashed border-slate-300 p-3 rounded-xl bg-slate-50/50 flex gap-4 opacity-80 shadow-sm">
+                                <div class="flex-1 h-16 bg-slate-200/70 rounded-lg flex items-center justify-center text-xs font-bold text-slate-500 uppercase tracking-wider border border-slate-300/50">Columna Texto</div>
+                                <div class="flex-1 h-16 bg-slate-200/70 rounded-lg flex items-center justify-center text-xs font-bold text-slate-500 uppercase tracking-wider border border-slate-300/50">Columna Img</div>
                             </div>
                         </div>
 
-                        <div class="glass-card p-6">
-                            <h3 class="text-lg font-bold text-slate-800 mb-2"><i class="fa-solid fa-list-check text-indigo-500 mr-2"></i>Listas & Checklists</h3>
-                            <div class="space-y-2">
-                                <div class="flex items-center gap-2 text-xs text-slate-600"><input type="checkbox" checked class="accent-indigo-500"> <span class="line-through opacity-50">Tarea completada</span></div>
-                                <div class="flex items-center gap-2 text-xs text-slate-600"><input type="checkbox" class="accent-indigo-500"> <span>Pendiente interactivo</span></div>
+                        <div class="glass-card p-8">
+                            <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-3"><div class="bg-purple-100 p-2 rounded-lg"><i class="fa-solid fa-list-check text-purple-600"></i></div> Listas & Checklists</h3>
+                            <div class="space-y-4 pl-2">
+                                <div class="flex items-center gap-4 text-sm text-slate-600 group cursor-pointer p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                                    <input type="checkbox" checked class="accent-indigo-500 w-5 h-5 cursor-pointer"> 
+                                    <span class="line-through opacity-50 group-hover:opacity-70 transition-opacity">Tarea completada</span>
+                                </div>
+                                <div class="flex items-center gap-4 text-sm text-slate-600 group cursor-pointer p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                                    <input type="checkbox" class="accent-indigo-500 w-5 h-5 cursor-pointer"> 
+                                    <span class="group-hover:text-slate-800 transition-colors">Pendiente interactivo</span>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="glass-card p-6 bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
-                            <h3 class="text-lg font-bold mb-1 flex items-center gap-2"><i class="fa-solid fa-list-ol"></i> El Gran Final: Índice</h3>
-                            <p class="text-xs opacity-90">Ve al principio, <code>Insertar > Índice</code>. ¡Bum! Se genera solo gracias a los Títulos del Módulo 2.</p>
+                        <div class="glass-card p-8 bg-gradient-to-r from-indigo-600 to-purple-700 text-white shadow-2xl relative overflow-hidden group hover:scale-[1.02] transition-transform">
+                            <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+                            <h3 class="text-2xl font-bold mb-3 flex items-center gap-3 relative z-10"><i class="fa-solid fa-list-ol text-3xl opacity-80"></i> El Gran Final: Índice</h3>
+                            <p class="text-sm opacity-90 leading-relaxed relative z-10 font-medium">Ve al principio, <code>Insertar > Índice</code>. ¡Bum! Se genera solo gracias a los Títulos del Módulo 2.</p>
                         </div>
                         
-                        <div class="glass-card p-4 border-l-4 border-l-purple-500">
-                            <p class="text-xs text-slate-600"><b>Add-ons:</b> Docs es como un smartphone, instala apps como "Flaticon" para iconos.</p>
+                        <div class="glass-card p-6 border-l-8 border-l-purple-500 bg-purple-50/40 shadow-sm">
+                            <p class="text-sm text-slate-700 flex gap-3 items-center font-medium"><i class="fa-solid fa-puzzle-piece text-purple-500 text-lg"></i> <b>Add-ons:</b> Docs es como un smartphone, instala apps como "Flaticon" para iconos.</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Botón Siguiente -->
-                <div class="mt-12 flex justify-end pb-4">
+                <div class="mt-16 flex justify-end pb-8">
                     <button onclick="switchTab(4)" class="btn-continue group">
-                        <span>Siguiente Lección</span> 
-                        <i class="fa-solid fa-arrow-right text-slate-400 group-hover:text-white"></i>
+                        <span>Continuar al Módulo 4</span> 
+                        <i class="fa-solid fa-arrow-right-long group-hover:text-white"></i>
                     </button>
                 </div>
             </section>
 
             <!-- MÓDULO 4: COLABORACIÓN -->
-            <section id="view-4" class="max-w-6xl mx-auto hidden fade-in">
-                <div class="text-center mb-10">
-                    <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Módulo 4</span>
-                    <h2 class="text-4xl font-bold text-slate-800 brand-font mt-2">Colaboración en Tiempo Real</h2>
+            <section id="view-4" class="max-w-[90rem] mx-auto hidden fade-in">
+                <div class="text-center mb-12">
+                    <span class="bg-indigo-100 text-indigo-700 px-4 py-1.5 rounded-full text-sm font-bold uppercase tracking-wide shadow-sm">Módulo 4</span>
+                    <h2 class="text-5xl font-extrabold text-slate-800 brand-font mt-4 tracking-tight">Colaboración en Tiempo Real</h2>
                 </div>
 
-                <div class="grid lg:grid-cols-2 gap-8">
-                    <div class="glass-card p-8">
-                        <h3 class="text-xl font-bold text-slate-800 mb-4"><i class="fa-solid fa-shield-halved text-indigo-500 mr-2"></i>Compartir con Seguridad</h3>
-                        <p class="text-sm text-slate-500 mb-6">Escenario: Vas a enviar esto a 3 personas diferentes.</p>
+                <div class="grid lg:grid-cols-2 gap-10">
+                    <div class="glass-card p-10">
+                        <h3 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-3"><i class="fa-solid fa-shield-halved text-indigo-500"></i> Compartir con Seguridad</h3>
+                        <p class="text-base text-slate-500 mb-8 leading-relaxed">Escenario: Vas a enviar esto a 3 personas diferentes. Asigna roles con sabiduría.</p>
                         
-                        <div class="space-y-3">
-                            <div class="flex justify-between items-center p-3 bg-green-50 border border-green-100 rounded-xl">
-                                <div>
-                                    <span class="text-sm font-bold text-slate-700 block">Colega</span>
-                                    <span class="text-[10px] text-slate-500">Trabaja contigo</span>
+                        <div class="space-y-5">
+                            <div class="flex justify-between items-center p-5 bg-green-50/80 border-2 border-green-100 rounded-2xl shadow-sm hover:shadow-md transition-all hover:-translate-y-1 group">
+                                <div class="flex gap-4 items-center">
+                                    <div class="w-12 h-12 bg-green-200 rounded-full flex items-center justify-center text-green-700 text-xl shadow-sm group-hover:scale-110 transition-transform"><i class="fa-solid fa-user-check"></i></div>
+                                    <div>
+                                        <span class="text-base font-bold text-slate-800 block">Colega</span>
+                                        <span class="text-xs text-slate-500 font-medium">Trabaja contigo en el doc</span>
+                                    </div>
                                 </div>
-                                <span class="bg-white text-green-700 px-2 py-1 rounded shadow-sm text-xs font-bold">Editor ✏️</span>
+                                <span class="bg-white text-green-700 px-4 py-2 rounded-xl shadow-sm text-xs font-extrabold uppercase tracking-wider border border-green-200 group-hover:bg-green-700 group-hover:text-white transition-colors">Editor ✏️</span>
                             </div>
-                            <div class="flex justify-between items-center p-3 bg-yellow-50 border border-yellow-100 rounded-xl">
-                                <div>
-                                    <span class="text-sm font-bold text-slate-700 block">Jefe</span>
-                                    <span class="text-[10px] text-slate-500">Solo revisa</span>
+                            <div class="flex justify-between items-center p-5 bg-yellow-50/80 border-2 border-yellow-100 rounded-2xl shadow-sm hover:shadow-md transition-all hover:-translate-y-1 group">
+                                <div class="flex gap-4 items-center">
+                                    <div class="w-12 h-12 bg-yellow-200 rounded-full flex items-center justify-center text-yellow-700 text-xl shadow-sm group-hover:scale-110 transition-transform"><i class="fa-solid fa-user-pen"></i></div>
+                                    <div>
+                                        <span class="text-base font-bold text-slate-800 block">Jefe</span>
+                                        <span class="text-xs text-slate-500 font-medium">Solo revisa y deja notas</span>
+                                    </div>
                                 </div>
-                                <span class="bg-white text-yellow-700 px-2 py-1 rounded shadow-sm text-xs font-bold">Comentador 💬</span>
+                                <span class="bg-white text-yellow-700 px-4 py-2 rounded-xl shadow-sm text-xs font-extrabold uppercase tracking-wider border border-yellow-200 group-hover:bg-yellow-700 group-hover:text-white transition-colors">Comentador 💬</span>
                             </div>
-                            <div class="flex justify-between items-center p-3 bg-slate-50 border border-slate-200 rounded-xl">
-                                <div>
-                                    <span class="text-sm font-bold text-slate-700 block">Cliente</span>
-                                    <span class="text-[10px] text-slate-500">Solo mira</span>
+                            <div class="flex justify-between items-center p-5 bg-slate-50/80 border-2 border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-all hover:-translate-y-1 group">
+                                <div class="flex gap-4 items-center">
+                                    <div class="w-12 h-12 bg-slate-200 rounded-full flex items-center justify-center text-slate-700 text-xl shadow-sm group-hover:scale-110 transition-transform"><i class="fa-solid fa-user-lock"></i></div>
+                                    <div>
+                                        <span class="text-base font-bold text-slate-800 block">Cliente</span>
+                                        <span class="text-xs text-slate-500 font-medium">Solo puede ver, no tocar</span>
+                                    </div>
                                 </div>
-                                <span class="bg-white text-slate-700 px-2 py-1 rounded shadow-sm text-xs font-bold">Lector 👀</span>
+                                <span class="bg-white text-slate-700 px-4 py-2 rounded-xl shadow-sm text-xs font-extrabold uppercase tracking-wider border border-slate-200 group-hover:bg-slate-700 group-hover:text-white transition-colors">Lector 👀</span>
                             </div>
                         </div>
                         
-                        <div class="mt-6 p-3 bg-red-50 border border-red-100 rounded-lg flex gap-3 items-start">
-                            <i class="fa-solid fa-triangle-exclamation text-red-500 mt-1"></i>
-                            <p class="text-xs text-red-800"><b>Peligro:</b> Evita usar "Cualquier persona con el enlace puede editar".</p>
+                        <div class="mt-8 p-5 bg-red-50/80 border-2 border-red-100 rounded-2xl flex gap-4 items-start shadow-sm">
+                            <div class="bg-red-100 p-2 rounded-lg shrink-0"><i class="fa-solid fa-triangle-exclamation text-red-600 text-xl"></i></div>
+                            <p class="text-sm text-red-800 leading-relaxed font-medium"><b>Peligro:</b> Evita usar "Cualquier persona con el enlace puede editar". Es una puerta abierta a todo internet.</p>
                         </div>
                     </div>
 
-                    <div class="glass-card p-8">
-                        <h3 class="text-xl font-bold text-slate-800 mb-4"><i class="fa-solid fa-users-viewfinder text-indigo-500 mr-2"></i>Flujo de Trabajo</h3>
+                    <div class="glass-card p-10">
+                        <h3 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-3"><i class="fa-solid fa-users-viewfinder text-indigo-500"></i> Flujo de Trabajo</h3>
                         
-                        <div class="space-y-6">
+                        <div class="space-y-8">
                             <div>
-                                <h4 class="text-sm font-bold text-slate-700 mb-2">1. Comentarios y @Menciones</h4>
-                                <div class="bg-white border rounded-xl p-4 shadow-sm relative">
-                                    <span class="bg-yellow-200 text-slate-800">Revisar presupuesto</span>
+                                <h4 class="text-lg font-bold text-slate-700 mb-3 flex items-center gap-2"><span class="bg-indigo-100 text-indigo-700 w-6 h-6 rounded-full flex items-center justify-center text-xs">1</span> Comentarios y @Menciones</h4>
+                                <div class="bg-white border-2 border-slate-200 rounded-2xl p-6 shadow-sm relative group hover:shadow-md transition-shadow">
+                                    <p class="text-slate-600 mb-2">El presupuesto final para el proyecto es de <span class="bg-yellow-200/80 text-slate-800 px-1 rounded border-b-2 border-yellow-400 cursor-pointer">XXX USD</span>.</p>
                                     <!-- Tooltip Comentario -->
-                                    <div class="absolute -right-2 -top-4 bg-slate-800 text-white p-2 rounded-lg text-[10px] shadow-xl w-48 z-10">
-                                        <b>@juan@email.com</b> <br> Asignar tarea. Le llegará un email de notificación.
+                                    <div class="absolute -right-4 -top-10 bg-slate-800 text-white p-3 rounded-xl text-xs shadow-2xl w-56 z-10 opacity-0 group-hover:opacity-100 transition-all duration-300 scale-90 group-hover:scale-100 origin-bottom-left">
+                                        <div class="flex items-center gap-2 mb-1"><div class="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-[10px] font-bold">U</div> <b class="text-purple-200">@juan@email.com</b></div>
+                                        Asignar tarea: ¿Cuál es la cifra exacta? Le llegará un email de notificación.
+                                        <div class="absolute -bottom-2 left-6 w-4 h-4 bg-slate-800 rotate-45"></div>
                                     </div>
                                 </div>
                             </div>
 
                             <div>
-                                <h4 class="text-sm font-bold text-slate-700 mb-2">2. Modo Sugerencias</h4>
-                                <div class="bg-green-50 border border-green-200 rounded-xl p-4 text-sm text-slate-700">
-                                    El proyecto es <span class="line-through text-slate-400 decoration-red-400">malo</span> <span class="text-green-600 font-bold bg-white px-1 rounded shadow-sm">excelente</span>.
+                                <h4 class="text-lg font-bold text-slate-700 mb-3 flex items-center gap-2"><span class="bg-indigo-100 text-indigo-700 w-6 h-6 rounded-full flex items-center justify-center text-xs">2</span> Modo Sugerencias</h4>
+                                <div class="bg-green-50/80 border-2 border-green-200 rounded-2xl p-6 text-base text-slate-700 shadow-sm leading-relaxed relative">
+                                    <div class="absolute top-3 right-3 text-green-600"><i class="fa-solid fa-pencil"></i></div>
+                                    El resultado del proyecto es <span class="line-through text-red-400 decoration-red-400/50 decoration-2 mx-1">malo</span> <span class="text-green-700 font-bold bg-white px-2 py-0.5 rounded-md shadow-sm border border-green-200">excelente</span>. Se sugiere este cambio para mayor impacto.
                                 </div>
-                                <p class="text-[10px] text-slate-400 mt-1">Cambia de "Edición" a "Sugerencias" (icono lápiz). No borras, sugieres.</p>
+                                <p class="text-xs text-slate-500 mt-2 font-medium flex items-center gap-2 ml-2"><i class="fa-solid fa-info-circle"></i> Cambia de "Edición" a "Sugerencias" (icono lápiz arriba a la derecha). No borras, sugieres cambios.</p>
                             </div>
                             
-                            <div class="bg-slate-50 p-3 rounded-lg text-xs text-slate-600 border border-slate-200">
-                                <b>Historial de Versiones:</b> <code>Archivo > Historial</code>. Viaja al pasado y ve el doc hace 2 horas. <b>Tip:</b> Pon nombre a las versiones (ej. "Borrador Final").
+                            <div class="bg-slate-50/80 p-5 rounded-2xl text-sm text-slate-600 border-2 border-slate-200 shadow-sm flex gap-4 items-center">
+                                <div class="bg-slate-200 p-2.5 rounded-xl shrink-0"><i class="fa-solid fa-clock-rotate-left text-slate-600 text-lg"></i></div>
+                                <div><b>Historial de Versiones:</b> <code>Archivo > Historial</code>. Viaja al pasado y ve el doc hace 2 horas. <b>Tip:</b> Pon nombre a las versiones importantes (ej. "Borrador Final v3").</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Botón Siguiente -->
-                <div class="mt-12 flex justify-end pb-4">
+                <div class="mt-16 flex justify-end pb-8">
                     <button onclick="switchTab(5)" class="btn-continue group">
-                        <span>Siguiente Lección</span> 
-                        <i class="fa-solid fa-arrow-right text-slate-400 group-hover:text-white"></i>
+                        <span>Continuar al Módulo 5</span> 
+                        <i class="fa-solid fa-arrow-right-long group-hover:text-white"></i>
                     </button>
                 </div>
             </section>
 
             <!-- MÓDULO 5: HERRAMIENTAS IA -->
-            <section id="view-5" class="max-w-6xl mx-auto hidden fade-in">
-                <div class="text-center mb-10">
-                    <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Módulo 5</span>
-                    <h2 class="text-4xl font-bold text-slate-800 brand-font mt-2">Herramientas Inteligentes y Finalización</h2>
+            <section id="view-5" class="max-w-[90rem] mx-auto hidden fade-in">
+                <div class="text-center mb-12">
+                    <span class="bg-indigo-100 text-indigo-700 px-4 py-1.5 rounded-full text-sm font-bold uppercase tracking-wide shadow-sm">Módulo 5</span>
+                    <h2 class="text-5xl font-extrabold text-slate-800 brand-font mt-4 tracking-tight">Herramientas Inteligentes y Finalización</h2>
                 </div>
 
-                <div class="grid md:grid-cols-3 gap-6">
-                    <div class="glass-card p-8 text-center hover:scale-105 transition duration-300">
-                        <div class="w-14 h-14 bg-pink-100 text-pink-500 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 shadow-sm">
-                            <i class="fa-solid fa-microphone"></i>
+                <div class="grid md:grid-cols-3 gap-10">
+                    <div class="glass-card p-10 text-center hover:scale-105 transition-all duration-500 group border-t-4 border-t-pink-500 hover:shadow-2xl">
+                        <div class="w-20 h-20 bg-pink-100 text-pink-500 rounded-3xl flex items-center justify-center text-4xl mx-auto mb-6 shadow-md group-hover:rotate-12 transition-transform group-hover:bg-pink-200 group-hover:text-pink-600">
+                            <i class="fa-solid fa-microphone-lines"></i>
                         </div>
-                        <h3 class="font-bold text-slate-800 mb-2">Asistencia</h3>
-                        <ul class="text-xs text-slate-500 text-left space-y-2">
-                            <li><b>Dictado por Voz:</b> <code>Herramientas > Dictado</code>. Habla rápido. Comandos: "Punto", "Nuevo párrafo".</li>
-                            <li><b>Traducir:</b> Genera una copia instantánea en inglés/francés.</li>
+                        <h3 class="text-2xl font-bold text-slate-800 mb-4">Asistencia por Voz</h3>
+                        <ul class="text-sm text-slate-600 text-left space-y-4 leading-relaxed">
+                            <li class="flex gap-3 items-start"><i class="fa-solid fa-check text-pink-400 mt-1"></i><div><b>Dictado por Voz:</b> <code>Herramientas > Dictado</code>. Habla rápido. Comandos: "Punto", "Nuevo párrafo". ¡Es mágico!</div></li>
+                            <li class="flex gap-3 items-start"><i class="fa-solid fa-check text-pink-400 mt-1"></i><div><b>Traducir Documento:</b> Genera una copia instantánea traducida en segundos (Inglés, Francés, etc.).</div></li>
                         </ul>
                     </div>
 
-                    <div class="glass-card p-8 text-center hover:scale-105 transition duration-300 border-indigo-200 ring-4 ring-indigo-50">
-                        <div class="w-14 h-14 bg-indigo-100 text-indigo-500 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4 shadow-sm font-serif font-bold">@</div>
-                        <h3 class="font-bold text-slate-800 mb-2">Smart Canvas</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed mb-4">
-                            La "Arroba Mágica". Escribe solo <b>@</b> para insertar:
+                    <div class="glass-card p-10 text-center hover:scale-105 transition-all duration-500 border-indigo-300 ring-4 ring-indigo-50/50 hover:shadow-2xl relative z-10 scale-105 shadow-xl group">
+                        <div class="absolute inset-0 bg-gradient-to-br from-indigo-50 to-purple-50 opacity-50 rounded-3xl z-0"></div>
+                        <div class="w-20 h-20 bg-indigo-100 text-indigo-600 rounded-3xl flex items-center justify-center text-5xl mx-auto mb-6 shadow-md font-serif font-bold relative z-10 group-hover:scale-110 transition-transform group-hover:bg-indigo-200 group-hover:text-indigo-700">@</div>
+                        <h3 class="text-2xl font-bold text-slate-800 mb-4 relative z-10">Smart Canvas (@)</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-6 relative z-10 font-medium">
+                            La "Arroba Mágica". Escribe solo <b>@</b> para desplegar un menú de superpoderes:
                         </p>
-                        <div class="flex flex-col gap-2 text-[10px] text-left bg-slate-50 p-3 rounded-lg">
-                            <div class="flex gap-2 items-center"><i class="fa-regular fa-calendar"></i> Fecha (Abre calendario)</div>
-                            <div class="flex gap-2 items-center"><i class="fa-solid fa-user"></i> Persona (Muestra contacto)</div>
-                            <div class="flex gap-2 items-center"><i class="fa-brands fa-google-drive"></i> Archivo (Enlace inteligente)</div>
+                        <div class="flex flex-col gap-3 text-xs text-left bg-white/70 p-5 rounded-2xl relative z-10 shadow-sm border border-indigo-100">
+                            <div class="flex gap-3 items-center p-2 hover:bg-indigo-50 rounded-lg transition-colors"><div class="bg-indigo-100 p-1.5 rounded-md"><i class="fa-regular fa-calendar text-indigo-600"></i></div> Fecha (Abre mini-calendario)</div>
+                            <div class="flex gap-3 items-center p-2 hover:bg-indigo-50 rounded-lg transition-colors"><div class="bg-indigo-100 p-1.5 rounded-md"><i class="fa-solid fa-user text-indigo-600"></i></div> Persona (Muestra ficha contacto)</div>
+                            <div class="flex gap-3 items-center p-2 hover:bg-indigo-50 rounded-lg transition-colors"><div class="bg-indigo-100 p-1.5 rounded-md"><i class="fa-brands fa-google-drive text-indigo-600"></i></div> Archivo (Enlace inteligente con vista previa)</div>
                         </div>
                     </div>
 
-                    <div class="glass-card p-8 text-center hover:scale-105 transition duration-300">
-                        <div class="w-14 h-14 bg-teal-100 text-teal-500 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 shadow-sm">
+                    <div class="glass-card p-10 text-center hover:scale-105 transition-all duration-500 group border-t-4 border-t-teal-500 hover:shadow-2xl">
+                        <div class="w-20 h-20 bg-teal-100 text-teal-500 rounded-3xl flex items-center justify-center text-4xl mx-auto mb-6 shadow-md group-hover:-rotate-12 transition-transform group-hover:bg-teal-200 group-hover:text-teal-600">
                             <i class="fa-solid fa-file-export"></i>
                         </div>
-                        <h3 class="font-bold text-slate-800 mb-2">Salida</h3>
-                        <ul class="text-xs text-slate-500 text-left space-y-2">
-                            <li><b>PDF:</b> Impresión / Final.</li>
-                            <li><b>Word (.docx):</b> Si el receptor exige editar en Office.</li>
-                            <li><b>Publicar en web:</b> Convierte el doc en una página web pública simple (sin cuenta Google).</li>
+                        <h3 class="text-2xl font-bold text-slate-800 mb-4">Formatos de Salida</h3>
+                        <ul class="text-sm text-slate-600 text-left space-y-4 leading-relaxed">
+                            <li class="flex gap-3 items-start"><i class="fa-solid fa-check text-teal-400 mt-1"></i><div><b>PDF:</b> Para impresión o envío final "congelado".</div></li>
+                            <li class="flex gap-3 items-start"><i class="fa-solid fa-check text-teal-400 mt-1"></i><div><b>Word (.docx):</b> Si el receptor exige editar en Office. Mantiene buen formato.</div></li>
+                            <li class="flex gap-3 items-start"><i class="fa-solid fa-check text-teal-400 mt-1"></i><div><b>Publicar en la web:</b> Convierte el doc en una página web pública simple y ligera (sin necesidad de cuenta Google).</div></li>
                         </ul>
                     </div>
                 </div>
 
                 <!-- Botón Siguiente (ESPECIAL) -->
-                <div class="mt-12 flex justify-end pb-4">
-                    <button onclick="switchTab(6)" class="btn-continue btn-final group">
-                        <span>Ir a la Graduación</span> 
-                        <i class="fa-solid fa-graduation-cap ml-2"></i>
+                <div class="mt-16 flex justify-end pb-8">
+                    <button onclick="switchTab(6)" class="btn-continue btn-final group text-base px-10 py-4">
+                        <span>Ir a la Graduación Final</span> 
+                        <i class="fa-solid fa-graduation-cap ml-3 text-xl group-hover:rotate-12 transition-transform"></i>
                     </button>
                 </div>
             </section>
 
             <!-- EJERCICIOS Y QUIZ -->
-            <section id="view-6" class="max-w-5xl mx-auto hidden fade-in pb-10">
-                <div class="glass-card p-12 text-center relative overflow-hidden bg-white border border-slate-200 shadow-xl">
+            <section id="view-6" class="max-w-6xl mx-auto hidden fade-in pb-16">
+                <div class="glass-card p-16 text-center relative overflow-hidden bg-white border-2 border-slate-200/80 shadow-2xl">
                     <!-- Fondo sutil -->
-                    <div class="absolute inset-0 bg-slate-50 opacity-50 z-0"></div>
+                    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-50 via-white to-slate-100 opacity-80 z-0"></div>
+                    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diamond-upholstery.png')] opacity-5 z-0 mix-blend-multiply"></div>
                     
                     <div class="relative z-10">
-                        <div class="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce">
-                            <i class="fa-solid fa-gamepad text-4xl text-yellow-500"></i>
+                        <div class="w-28 h-28 bg-gradient-to-tr from-yellow-100 to-orange-100 rounded-full flex items-center justify-center mx-auto mb-8 shadow-lg border-4 border-white animate-[bounce_2s_infinite]">
+                            <i class="fa-solid fa-trophy text-5xl text-yellow-500 drop-shadow-sm"></i>
                         </div>
                         
-                        <h2 class="text-3xl font-bold mb-4 brand-font text-slate-800">Misiones Finales</h2>
-                        <p class="text-slate-500 mb-10 max-w-lg mx-auto text-sm">
-                            ¡Demuestra que eres un Maestro de Docs! Completa estas 3 misiones para desbloquear tu certificado imaginario.
+                        <h2 class="text-4xl font-extrabold mb-6 brand-font text-slate-800 tracking-tight">Misiones Finales</h2>
+                        <p class="text-slate-500 mb-12 max-w-2xl mx-auto text-base font-medium leading-relaxed">
+                            ¡Demuestra que eres un verdadero Maestro de Docs! Completa estas 3 misiones prácticas para desbloquear tu certificado imaginario de graduación.
                         </p>
 
-                        <!-- Tarjetas de Ejercicios Prácticos (VERSIÓN KIDS) -->
-                        <div class="grid md:grid-cols-3 gap-6 text-left text-slate-800 mb-12">
+                        <!-- Tarjetas de Ejercicios Prácticos (MEJORADAS) -->
+                        <div class="grid md:grid-cols-3 gap-8 text-left text-slate-800 mb-16">
                             <!-- Misión 1 -->
-                            <div class="bg-white border border-green-200 p-6 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-2 transition duration-300">
-                                <div class="text-[10px] font-bold text-green-600 uppercase mb-3 tracking-wider bg-green-50 w-max px-2 py-1 rounded-full">Misión 1: Diseño</div>
-                                <h4 class="font-bold mb-2 text-lg">🎉 La Invitación Épica</h4>
-                                <p class="text-xs text-slate-500 leading-relaxed">
-                                    Crea una invitación para tu cumpleaños o un torneo de videojuegos. 
-                                    <br><br>
-                                    <b>Reto:</b> Usa 3 fuentes distintas, letras de colores y una imagen buscada en la web (sin salir de Docs).
-                                </p>
+                            <div class="bg-white border-2 border-green-200 p-8 rounded-3xl shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500 relative group overflow-hidden">
+                                <div class="absolute top-0 right-0 w-24 h-24 bg-green-50 rounded-bl-[4rem] -mr-10 -mt-10 z-0 group-hover:scale-125 transition-transform duration-500"></div>
+                                <div class="relative z-10">
+                                    <div class="text-[11px] font-extrabold text-green-600 uppercase mb-4 tracking-widest bg-green-100 w-max px-3 py-1.5 rounded-full shadow-sm">Misión 1: Diseño Visual</div>
+                                    <h4 class="font-bold mb-3 text-xl flex items-center gap-2"><span class="text-2xl">🎉</span> La Invitación Épica</h4>
+                                    <p class="text-sm text-slate-500 leading-loose font-medium">
+                                        Crea una invitación atractiva para tu cumpleaños o un torneo. 
+                                        <br><br>
+                                        <b class="text-green-700">Reto:</b> Usa 3 fuentes distintas, colores vibrantes y una imagen buscada desde la barra lateral (sin salir de Docs).
+                                    </p>
+                                </div>
                             </div>
 
                             <!-- Misión 2 -->
-                            <div class="bg-white border border-indigo-200 p-6 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-2 transition duration-300 relative overflow-hidden">
-                                <div class="absolute top-0 right-0 w-16 h-16 bg-indigo-50 rounded-bl-full -mr-8 -mt-8 z-0"></div>
+                            <div class="bg-white border-2 border-indigo-200 p-8 rounded-3xl shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500 relative group overflow-hidden">
+                                <div class="absolute top-0 right-0 w-24 h-24 bg-indigo-50 rounded-bl-[4rem] -mr-10 -mt-10 z-0 group-hover:scale-125 transition-transform duration-500"></div>
                                 <div class="relative z-10">
-                                    <div class="text-[10px] font-bold text-indigo-600 uppercase mb-3 tracking-wider bg-indigo-50 w-max px-2 py-1 rounded-full">Misión 2: Wiki-Experto</div>
-                                    <h4 class="font-bold mb-2 text-lg">🔎 Investigación Top</h4>
-                                    <p class="text-xs text-slate-500 leading-relaxed">
-                                        Copia texto de Wikipedia sobre tu animal o juego favorito.
+                                    <div class="text-[11px] font-extrabold text-indigo-600 uppercase mb-4 tracking-widest bg-indigo-100 w-max px-3 py-1.5 rounded-full shadow-sm">Misión 2: Estructura PRO</div>
+                                    <h4 class="font-bold mb-3 text-xl flex items-center gap-2"><span class="text-2xl">🔎</span> Investigación Top</h4>
+                                    <p class="text-sm text-slate-500 leading-loose font-medium">
+                                        Copia texto de Wikipedia sobre tu tema favorito.
                                         <br><br>
-                                        <b>Reto:</b> "Pegar sin formato" (¡limpio!), pon Títulos Grandes (H1) y genera el <b>Índice Automático</b> mágico al inicio.
+                                        <b class="text-indigo-700">Reto:</b> Usa "Pegar sin formato" (¡limpio!), aplica Títulos (H1, H2) y genera el <b>Índice Automático</b> al inicio.
                                     </p>
                                 </div>
                             </div>
 
                             <!-- Misión 3 -->
-                            <div class="bg-white border border-purple-200 p-6 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-2 transition duration-300">
-                                <div class="text-[10px] font-bold text-purple-600 uppercase mb-3 tracking-wider bg-purple-50 w-max px-2 py-1 rounded-full">Misión 3: Editor Jefe</div>
-                                <h4 class="font-bold mb-2 text-lg">🕵️‍♂️ Detective de Errores</h4>
-                                <p class="text-xs text-slate-500 leading-relaxed">
-                                    Escribe una historia corta con errores a propósito.
-                                    <br><br>
-                                    <b>Reto:</b> Activa el <b>"Modo Sugerencias"</b> (el lápiz verde) para corregirte a ti mismo y deja un comentario con @mención para un amigo imaginario.
-                                </p>
+                            <div class="bg-white border-2 border-purple-200 p-8 rounded-3xl shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500 relative group overflow-hidden">
+                                <div class="absolute top-0 right-0 w-24 h-24 bg-purple-50 rounded-bl-[4rem] -mr-10 -mt-10 z-0 group-hover:scale-125 transition-transform duration-500"></div>
+                                <div class="relative z-10">
+                                    <div class="text-[11px] font-extrabold text-purple-600 uppercase mb-4 tracking-widest bg-purple-100 w-max px-3 py-1.5 rounded-full shadow-sm">Misión 3: Editor Jefe</div>
+                                    <h4 class="font-bold mb-3 text-xl flex items-center gap-2"><span class="text-2xl">🕵️‍♂️</span> Detective de Errores</h4>
+                                    <p class="text-sm text-slate-500 leading-loose font-medium">
+                                        Escribe un párrafo corto con errores a propósito.
+                                        <br><br>
+                                        <b class="text-purple-700">Reto:</b> Activa el <b>"Modo Sugerencias"</b> para corregirte y deja un comentario con @mención a un amigo imaginario.
+                                    </p>
+                                </div>
                             </div>
                         </div>
 
-                        <button onclick="celebrate()" class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-10 py-4 rounded-full font-bold text-base shadow-lg hover:shadow-xl hover:scale-105 transition-all interactive-btn inline-block">
-                            ¡Misiones Completadas! 🚀
+                        <button onclick="celebrate()" class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white px-12 py-5 rounded-full font-extrabold text-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all interactive-btn inline-block relative overflow-hidden group">
+                            <span class="relative z-10 flex items-center gap-3">¡Misiones Completadas! <i class="fa-solid fa-rocket text-2xl group-hover:translate-x-1 transition-transform"></i></span>
+                            <div class="absolute inset-0 bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                         </button>
+                        <p class="text-xs text-slate-400 mt-4 font-medium">Haz clic para celebrar y abrir Google Docs en una nueva pestaña.</p>
                     </div>
                 </div>
             </section>
@@ -822,7 +877,7 @@
         </div>
     </main>
 
-    <!-- SCRIPTS -->
+    <!-- SCRIPTS (Sin cambios funcionales) -->
     <script>
         // Navegación
         function switchTab(index) {
@@ -851,9 +906,20 @@
             }
             if(currentTab) currentTab.classList.add('active');
 
-            // Barra Progreso
+            // Barra Progreso (Mejorada visualmente)
             const progress = (index / 6) * 100;
-            document.getElementById('progress-bar').style.width = `${progress}%`;
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            const progressGlow = progressBar.querySelector('.progress-glow');
+            
+            progressBar.style.width = `${progress}%`;
+            progressText.innerText = `${Math.round(progress)}%`;
+            
+            if (progress > 0) {
+                progressGlow.style.opacity = '1';
+            } else {
+                progressGlow.style.opacity = '0';
+            }
         }
 
         // Simulador Limpieza Texto
@@ -862,27 +928,33 @@
             const feedback = document.getElementById('clean-feedback');
             
             text.innerHTML = "Texto copiado de Wikipedia con enlaces raros y formatos extraños.";
-            text.className = "transition-all duration-500 font-sans text-slate-800";
+            text.className = "transition-all duration-700 font-sans text-slate-800 text-xl leading-relaxed";
             
             feedback.style.opacity = '1';
-            setTimeout(() => feedback.style.opacity = '0', 2000);
+            feedback.style.transform = 'translateY(0)';
+            setTimeout(() => {
+                feedback.style.opacity = '0';
+                feedback.style.transform = 'translateY(10px)';
+            }, 3000);
         }
 
-        // Simulador Imagen Wrap
+        // Simulador Imagen Wrap (Mejorado visualmente)
         function toggleImgWrap() {
             const img = document.getElementById('demo-img');
             const btn = document.getElementById('wrap-btn');
             
             if(img.classList.contains('absolute')) {
                 // Modo Ajustado
-                img.classList.remove('absolute', 'top-10', 'right-10');
-                img.classList.add('float-right', 'ml-4', 'mb-2');
+                img.classList.remove('absolute', 'top-12', 'right-12');
+                img.classList.add('float-right', 'ml-6', 'mb-4', 'scale-90');
                 btn.style.opacity = '1';
+                btn.style.transform = 'translate(-50%, 0) scale(1)';
             } else {
                 // Reset
-                img.classList.add('absolute', 'top-10', 'right-10');
-                img.classList.remove('float-right', 'ml-4', 'mb-2');
+                img.classList.add('absolute', 'top-12', 'right-12');
+                img.classList.remove('float-right', 'ml-6', 'mb-4', 'scale-90');
                 btn.style.opacity = '0';
+                btn.style.transform = 'translate(-50%, 20px) scale(0.9)';
             }
         }
 
@@ -890,7 +962,7 @@
         function celebrate() {
             var duration = 3 * 1000;
             var animationEnd = Date.now() + duration;
-            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100 };
+            var defaults = { startVelocity: 45, spread: 360, ticks: 90, zIndex: 100, colors: ['#6366f1', '#ec4899', '#facc15', '#3b82f6'] };
 
             function randomInRange(min, max) {
                 return Math.random() * (max - min) + min;
@@ -903,7 +975,7 @@
                     return clearInterval(interval);
                 }
 
-                var particleCount = 50 * (timeLeft / duration);
+                var particleCount = 80 * (timeLeft / duration);
                 confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
                 confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
             }, 250);
@@ -911,7 +983,7 @@
             setTimeout(() => {
                 // Redirigir a Google Docs para practicar
                 window.open("https://docs.google.com", "_blank");
-            }, 2000);
+            }, 2500);
         }
 
         // Start
