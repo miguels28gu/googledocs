@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Docs</title>
+    
+    <!-- Librerías -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- ESTILOS NIVEL 1000 --- */
+        :root {
+            --primary: #4F46E5;
+            --secondary: #EC4899;
+            --glass: rgba(255, 255, 255, 0.9);
+        }
+        /* Estado Activo con Efecto Radar */
+        @keyframes pulse-radar {
+            0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(99, 102, 241, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+        }
+
+        .nav-pill.active {
+            @apply text-indigo-800 bg-white border-indigo-50 transform scale-105;
+            animation: pulse-radar 2s infinite; /* Efecto pulsante añadido */
+            border: 1px solid rgba(99,102,241,0.2);
+        }
+
+        /* Mostrar barra al estar activo */
+        .nav-pill.active::after { transform: scaleX(1); }
+
+        /* Estilo especial para el último botón (Ejercicios) */
+        #tab-6.nav-pill.active {
+            @apply text-yellow-800 bg-yellow-50 border-yellow-200;
+            animation: none; /* Sin radar para el final, o uno dorado */
+            box-shadow: 0 4px 20px -5px rgba(234,179,8,0.5);
+        }
+        
+        h1, h2, h3, h4, .brand-font { font-family: 'Outfit', sans-serif; }
+
+        /* Fondo Animado */
+        .bg-gradient-animate {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 20s ease infinite;
+            position: absolute; inset: 0; z-index: -2; opacity: 0.15;
+        }
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Glassmorphism Cards */
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.15);
+        }
+
+        /* --- NAVEGACIÓN MEJORADA --- */
+        .nav-pill {
+            @apply px-4 py-3 rounded-xl text-sm font-bold text-slate-500 cursor-pointer transition-all border border-transparent whitespace-nowrap select-none flex items-center gap-2 relative overflow-hidden bg-white/40 hover:bg-white/60 backdrop-blur-sm;
+        }
+        
+        /* Barra indicadora inferior animada */
+        .nav-pill::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; width: 100%; h-1;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            transform: scaleX(0); /* Oculto inicialmente */
+            transform-origin: left;
+            transition: transform 0.3s ease-out;
+        }
+
+        .nav-pill:hover { @apply text-indigo-600; }
+
+        /* Estado Activo */
+        .nav-pill.active {
+            @apply text-indigo-800 bg-white shadow-[0_4px_20px_-5px_rgba(99,102,241,0.3)] border-indigo-50 transform scale-105;
+        }
+
+        /* Mostrar barra al estar activo */
+        .nav-pill.active::after { transform: scaleX(1); }
+
+        /* Estilo especial para el último botón (Ejercicios) */
+        #tab-6.nav-pill.active {
+            @apply text-yellow-800 bg-yellow-50 border-yellow-200 shadow-[0_4px_20px_-5px_rgba(234,179,8,0.3)];
+        }
+        #tab-6.nav-pill::after {
+            background: linear-gradient(to right, #facc15, #ea580c);
+        }
+
+
+        /* Scrollbar */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Utilidades */
+        .interactive-btn { @apply active:scale-95 transition-transform select-none cursor-pointer; }
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; opacity: 0; transform: translateY(10px); }
+        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
+
+        /* Blobs de fondo */
+        .blob {
+            position: absolute; filter: blur(60px); z-index: -1; opacity: 0.5;
+            animation: float 10s infinite ease-in-out;
+        }
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(30px, -30px); }
+        }
+
+        /* Estilos de Texto Rico */
+        .rich-text p { margin-bottom: 0.75rem; font-size: 0.875rem; line-height: 1.6; color: #475569; }
+        .rich-text b { color: #1e293b; }
+        .rich-text ul { list-style-type: disc; padding-left: 1.25rem; margin-bottom: 0.75rem; font-size: 0.875rem; color: #475569; }
+        .rich-text li { margin-bottom: 0.25rem; }
+        .concept-tag { @apply inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider mr-2; }
+
+        /* --- BOTÓN CONTINUAR ELEGANTE (Minimalista) --- */
+        .btn-continue {
+            /* Diseño Sobrio */
+            background-color: #1e293b; /* Slate-800 */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #f8fafc;
+            
+            /* Estructura */
+            @apply flex items-center gap-3 px-6 py-3 rounded-lg font-medium shadow-sm transition-all duration-300 cursor-pointer text-sm ml-auto tracking-wide;
+        }
+
+        .btn-continue:hover { 
+            background-color: #334155; /* Slate-700 */
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding-right: 2rem; /* Efecto sutil de expansión */
+        }
+        
+        .btn-continue i {
+            transition: transform 0.3s ease;
+        }
+        
+        .btn-continue:hover i {
+            transform: translateX(4px);
+        }
+
+        .btn-continue:active { @apply scale-95; }
+        
+        /* Botón Final - Un poco más destacado pero elegante */
+        .btn-final {
+            background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%); /* Indigo sutil */
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+        .btn-final:hover {
+            box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.3);
+        }
+
+        /* Google Plus Colors */
+        .plus-google-colors {
+            background: linear-gradient(to bottom right, #EA4335 0%, #EA4335 25%, #4285F4 25%, #4285F4 50%, #34A853 50%, #34A853 75%, #FBBC05 75%, #FBBC05 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen w-screen bg-slate-50 relative">
+
+    <!-- Fondo Dinámico -->
+    <div class="bg-gradient-animate"></div>
+    <div class="blob bg-indigo-400 w-96 h-96 top-0 left-0 rounded-full"></div>
+    <div class="blob bg-pink-400 w-80 h-80 bottom-0 right-0 rounded-full animation-delay-2000"></div>
+
+    <!-- HEADER -->
+    <header class="p-4 z-50 shrink-0">
+        <div class="glass-card px-6 py-4 flex flex-col lg:flex-row items-center justify-between gap-6 max-w-7xl mx-auto">
+            <div class="flex items-center gap-4 w-full lg:w-auto justify-between lg:justify-start">
+                <div class="flex items-center gap-3">
+                    <div class="bg-gradient-to-tr from-indigo-600 to-purple-600 p-2.5 rounded-xl text-white shadow-md">
+                        <i class="fa-solid fa-graduation-cap text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-extrabold text-slate-800 brand-font leading-none">DOCS <span class="text-indigo-600">MASTER</span></h1>
+                        <p class="text-[10px] text-slate-500 font-bold tracking-wider uppercase">Google Docs</p>
+                    </div>
+                </div>
+                
+                <!-- Barra de Progreso -->
+                <div class="hidden md:block w-32 h-2 bg-slate-200 rounded-full overflow-hidden ml-4">
+                    <div id="progress-bar" class="h-full bg-gradient-to-r from-indigo-500 to-purple-500 w-[15%] transition-all duration-500"></div>
+                </div>
+            </div>
+
+            <!-- Navegación Mejorada -->
+            <nav class="flex overflow-x-auto gap-3 no-scrollbar w-full lg:w-auto pb-1 lg:pb-0 p-1">
+                <div onclick="switchTab(1)" id="tab-1" class="nav-pill active">1. Ecosistema</div>
+                <div onclick="switchTab(2)" id="tab-2" class="nav-pill">2. Edición</div>
+                <div onclick="switchTab(3)" id="tab-3" class="nav-pill">3. Diseño</div>
+                <div onclick="switchTab(4)" id="tab-4" class="nav-pill">4. Colaboración</div>
+                <div onclick="switchTab(5)" id="tab-5" class="nav-pill">5. IA & Final</div>
+                <div onclick="switchTab(6)" id="tab-6" class="nav-pill">Ejercicios 🎓</div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- CONTENIDO -->
+    <main class="flex-1 overflow-hidden relative w-full flex justify-center">
+        <div class="w-full h-full overflow-y-auto p-4 pb-24 scroll-smooth" id="scroll-container">
+            
+            <!-- MÓDULO 1: ECOSISTEMA -->
+            <section id="view-1" class="max-w-6xl mx-auto fade-in">
+                <div class="text-center mb-10">
+                    <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Módulo 1</span>
+                    <h2 class="text-4xl font-bold text-slate-800 brand-font mt-2">Introducción al Ecosistema</h2>
+                </div>
+
+                <div class="grid lg:grid-cols-12 gap-8">
+                    <!-- Columna Izquierda: Teoría Profunda -->
+                    <div class="lg:col-span-5 space-y-6">
+                        <div class="glass-card p-6 rich-text">
+                            <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-layer-group text-indigo-500"></i> Contexto: Google Workspace</h3>
+                            
+                            <div class="mb-4 pb-4 border-b border-slate-200">
+                                <span class="concept-tag bg-blue-100 text-blue-700">Definición</span>
+                                <p class="mt-2">Google Workspace es la suite que integra todas las herramientas de productividad (Gmail, Drive, Calendar, Meet) bajo un mismo techo. <b>Google Docs</b> es el procesador de texto de esta familia.</p>
+                            </div>
+
+                            <div>
+                                <span class="concept-tag bg-purple-100 text-purple-700">Word vs Docs</span>
+                                <ul class="mt-2 space-y-2">
+                                    <li><i class="fa-solid fa-hard-drive text-red-400 mr-2"></i><b>Tradicional (Word):</b> Archivos locales en tu disco duro. Riesgo de pérdida si se daña la PC. Diseño individual.</li>
+                                    <li><i class="fa-solid fa-cloud text-green-500 mr-2"></i><b>Nube (Docs):</b> Vive en internet. Colaborativo por diseño. Accesible desde cualquier lugar.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="glass-card p-6 bg-gradient-to-br from-white to-blue-50 rich-text">
+                            <h3 class="text-lg font-bold text-slate-800 mb-3"><i class="fa-solid fa-wifi text-blue-500"></i> Beneficios Cloud</h3>
+                            <ul class="space-y-3">
+                                <li class="flex gap-3 items-start"><i class="fa-solid fa-mobile-screen text-blue-500 mt-1"></i> <div><b>Omnicanalidad:</b> Empieza en la oficina, edita en el celular en el bus, termina en la laptop en casa.</div></li>
+                                <li class="flex gap-3 items-start"><i class="fa-solid fa-floppy-disk text-green-500 mt-1"></i> <div><b>Guardado Automático:</b> <span class="bg-red-100 text-red-800 px-1 rounded text-[10px] font-bold">¡NO BUSQUES EL BOTÓN GUARDAR!</span> No existe. Se guarda cada letra al instante.</div></li>
+                                <li class="flex gap-3 items-start"><i class="fa-solid fa-plane-slash text-slate-400 mt-1"></i> <div><b>Modo Offline:</b> Instala la extensión. Edita sin internet y se sincroniza al recuperar conexión.</div></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Columna Derecha: Interfaz y Acceso -->
+                    <div class="lg:col-span-7 space-y-6">
+                        <!-- Acceso -->
+                        <div class="glass-card p-6">
+                            <h3 class="text-lg font-bold text-slate-800 mb-4">Acceso y Dashboard</h3>
+                            
+                            <div class="bg-slate-900 rounded-xl p-4 text-white relative overflow-hidden min-h-[200px] flex flex-col items-center justify-center mb-4">
+                                <div class="absolute top-2 right-2 flex gap-2 items-center">
+                                    <span class="text-xs text-slate-400">Gmail</span>
+                                    <!-- Waffle -->
+                                    <div class="w-8 h-8 grid grid-cols-3 gap-0.5 p-1.5 hover:bg-slate-700 rounded-full cursor-pointer transition group relative">
+                                        <div class="bg-white rounded-full"></div><div class="bg-white rounded-full"></div><div class="bg-white rounded-full"></div>
+                                        <div class="bg-white rounded-full"></div><div class="bg-white rounded-full"></div><div class="bg-white rounded-full"></div>
+                                        <div class="bg-white rounded-full"></div><div class="bg-white rounded-full"></div><div class="bg-white rounded-full"></div>
+                                        
+                                        <!-- Dropdown -->
+                                        <div class="absolute top-10 right-0 bg-white text-slate-800 p-2 rounded-lg shadow-xl w-48 hidden group-hover:grid grid-cols-3 gap-2 z-20">
+                                            <div class="flex flex-col items-center p-1 hover:bg-slate-100 rounded"><div class="w-6 h-6 bg-blue-500 rounded-full text-white flex items-center justify-center text-[10px] font-bold">D</div><span class="text-[8px]">Docs</span></div>
+                                            <div class="flex flex-col items-center p-1 hover:bg-slate-100 rounded"><i class="fa-brands fa-google-drive text-xl text-green-600"></i><span class="text-[8px]">Drive</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="w-8 h-8 bg-purple-600 rounded-full text-xs flex items-center justify-center font-bold">U</div>
+                                </div>
+                                <p class="text-sm text-slate-300">Método 1: El Waffle (9 puntos) en Gmail/Google</p>
+                            </div>
+
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div class="bg-yellow-50 border border-yellow-200 p-3 rounded-lg text-xs text-yellow-800 flex items-start gap-2">
+                                    <i class="fa-solid fa-bolt mt-0.5"></i>
+                                    <div><b>Truco Pro:</b> Escribe <code>docs.new</code> en la barra de direcciones para crear un documento en blanco al instante.</div>
+                                </div>
+                                <div class="bg-slate-50 border border-slate-200 p-3 rounded-lg text-xs text-slate-600">
+                                    <b>Galería de Plantillas:</b> Úsalas para CVs o folletos y ahorra horas de diseño.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Simulación Pantalla de Inicio Docs -->
+                        <div class="glass-card p-6">
+                            <h3 class="text-lg font-bold text-slate-800 mb-4">El Dashboard (Pantalla de Inicio)</h3>
+                            <p class="text-xs text-slate-500 mb-4">Esta es la interfaz que verás inmediatamente después de ingresar. Es tu centro de control.</p>
+
+                            <div class="bg-white rounded-xl border border-slate-200 overflow-hidden relative min-h-[300px] flex flex-col shadow-inner">
+                                <!-- Top Bar -->
+                                <div class="bg-white p-3 flex items-center justify-between border-b border-slate-100">
+                                    <div class="flex items-center gap-3">
+                                        <i class="fa-solid fa-bars text-slate-500 text-lg"></i>
+                                        <div class="flex items-center gap-2 text-slate-700 font-medium text-sm">
+                                            <i class="fa-solid fa-file-lines text-blue-600 text-xl"></i> <span class="hidden sm:inline">Documentos</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1 mx-4 max-w-lg hidden md:block">
+                                        <div class="bg-slate-100 rounded-lg px-4 py-2 flex items-center text-slate-500 text-xs">
+                                            <i class="fa-solid fa-magnifying-glass mr-2"></i> Búsqueda
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-3 text-slate-500">
+                                        <i class="fa-solid fa-grip text-lg"></i>
+                                        <div class="w-8 h-8 bg-purple-600 rounded-full text-white flex items-center justify-center text-xs font-bold">U</div>
+                                    </div>
+                                </div>
+
+                                <!-- Template Gallery Section (Gray BG) -->
+                                <div class="bg-slate-50 p-4 pb-8 border-b border-slate-200">
+                                    <div class="flex justify-between items-center mb-3 max-w-4xl mx-auto">
+                                        <span class="text-slate-600 text-xs font-medium">Crear un documento</span>
+                                        <div class="flex items-center gap-2 text-slate-500 text-[10px] cursor-pointer hover:bg-slate-200 px-2 py-1 rounded transition">
+                                            <span>Galería de plantillas</span>
+                                            <i class="fa-solid fa-sort"></i>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 max-w-4xl mx-auto">
+                                        <!-- Blank -->
+                                        <div class="group cursor-pointer">
+                                            <div class="bg-white border hover:border-blue-500 rounded h-28 flex items-center justify-center shadow-sm transition-colors">
+                                                <i class="fa-solid fa-plus text-4xl text-transparent bg-clip-text bg-gradient-to-tr from-red-500 via-yellow-500 to-blue-500"></i>
+                                            </div>
+                                            <span class="text-[10px] font-bold text-slate-700 mt-2 block">En blanco</span>
+                                        </div>
+                                        <!-- CV -->
+                                        <div class="group cursor-pointer hidden md:block">
+                                            <div class="bg-white border hover:border-blue-500 rounded h-28 p-2 shadow-sm transition-colors overflow-hidden relative">
+                                                <div class="h-1 w-1/3 bg-slate-300 mb-1"></div>
+                                                <div class="h-1 w-full bg-slate-200 mb-1"></div>
+                                                <div class="h-1 w-full bg-slate-200 mb-1"></div>
+                                                <div class="h-1 w-2/3 bg-slate-200"></div>
+                                            </div>
+                                            <span class="text-[10px] font-bold text-slate-700 mt-2 block">Currículum</span>
+                                            <span class="text-[9px] text-slate-400 block">Serif</span>
+                                        </div>
+                                        <!-- Carta -->
+                                        <div class="group cursor-pointer hidden md:block">
+                                            <div class="bg-white border hover:border-blue-500 rounded h-28 p-2 shadow-sm transition-colors overflow-hidden relative">
+                                                <div class="h-1 w-1/4 bg-green-500 mb-2"></div>
+                                                <div class="space-y-1">
+                                                    <div class="h-0.5 w-full bg-slate-200"></div>
+                                                    <div class="h-0.5 w-full bg-slate-200"></div>
+                                                    <div class="h-0.5 w-full bg-slate-200"></div>
+                                                </div>
+                                            </div>
+                                            <span class="text-[10px] font-bold text-slate-700 mt-2 block">Carta</span>
+                                            <span class="text-[9px] text-slate-400 block">Menta</span>
+                                        </div>
+                                        <!-- Folleto -->
+                                        <div class="group cursor-pointer hidden md:block">
+                                            <div class="bg-white border hover:border-blue-500 rounded h-28 shadow-sm transition-colors overflow-hidden relative flex flex-col">
+                                                <div class="h-1/2 bg-slate-100 flex items-center justify-center"><div class="w-6 h-6 bg-red-400 rounded-full opacity-50"></div></div>
+                                                <div class="p-2">
+                                                    <div class="h-1 w-full bg-slate-200"></div>
+                                                </div>
+                                            </div>
+                                            <span class="text-[10px] font-bold text-slate-700 mt-2 block">Folleto</span>
+                                            <span class="text-[9px] text-slate-400 block">Geométrico</span>
+                                        </div>
+                                        <!-- Informe -->
+                                        <div class="group cursor-pointer hidden md:block">
+                                            <div class="bg-white border hover:border-blue-500 rounded h-28 p-2 shadow-sm transition-colors overflow-hidden relative">
+                                                <div class="text-[6px] font-serif text-slate-800 mb-1">INFORME</div>
+                                                <div class="h-14 bg-orange-100 mb-1 w-full"></div>
+                                            </div>
+                                            <span class="text-[10px] font-bold text-slate-700 mt-2 block">Informe</span>
+                                            <span class="text-[9px] text-slate-400 block">Lujo</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Recent Docs Section -->
+                                <div class="bg-white p-4 flex-1">
+                                    <div class="flex justify-between items-center max-w-4xl mx-auto mb-4">
+                                        <span class="text-slate-700 text-xs font-medium">Documentos recientes</span>
+                                        <div class="flex items-center gap-4 text-slate-500 text-[10px]">
+                                            <span class="flex items-center gap-1 cursor-pointer hover:bg-slate-100 px-2 py-1 rounded">Cualquiera es el propietario <i class="fa-solid fa-caret-down"></i></span>
+                                            <div class="flex gap-3 text-slate-400">
+                                                <i class="fa-solid fa-list cursor-pointer hover:text-slate-600"></i>
+                                                <i class="fa-solid fa-arrow-down-z-a cursor-pointer hover:text-slate-600"></i>
+                                                <i class="fa-regular fa-folder cursor-pointer hover:text-slate-600"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Empty state -->
+                                    <div class="max-w-4xl mx-auto text-center py-6 text-slate-300 text-xs">
+                                        <i class="fa-regular fa-file-lines text-2xl mb-2"></i>
+                                        <p>No hay documentos recientes</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Interfaz Edición -->
+                        <div class="glass-card p-6">
+                            <h3 class="text-lg font-bold text-slate-800 mb-4">La Interfaz de Edición</h3>
+                            <div class="relative bg-white border rounded-xl p-2 shadow-sm text-xs">
+                                <!-- Menu Bar -->
+                                <div class="flex gap-4 border-b pb-2 mb-2 text-slate-600 font-medium">
+                                    <span class="bg-blue-50 text-blue-700 px-2 rounded">Menú (Archivo, Editar...)</span>
+                                    <span class="text-slate-400">Controles de archivo</span>
+                                </div>
+                                <!-- Iconos Rápidos -->
+                                <div class="flex gap-2 items-center bg-slate-50 p-1 rounded mb-2">
+                                    <span class="bg-blue-50 text-blue-700 px-2 rounded mr-2">Barra Herramientas</span>
+                                    <i class="fa-solid fa-bold p-1 text-slate-400"></i>
+                                    <i class="fa-solid fa-align-left p-1 text-slate-400"></i>
+                                    <span class="text-[10px] text-slate-400 ml-auto">Acciones rápidas</span>
+                                </div>
+                                <!-- Canvas -->
+                                <div class="h-24 bg-white border border-dashed border-slate-200 flex relative">
+                                    <div class="absolute left-0 top-0 bottom-0 w-8 bg-slate-50 border-r flex flex-col items-center pt-2 text-[8px] text-slate-500 gap-1">
+                                        <i class="fa-solid fa-list-ul text-blue-500"></i>
+                                        <span>Esq</span>
+                                    </div>
+                                    <div class="absolute right-0 top-0 bottom-0 w-8 bg-white border-l flex flex-col items-center pt-2 gap-2">
+                                        <div class="w-4 h-4 bg-yellow-200 rounded-full cursor-pointer" title="Keep"></div>
+                                        <div class="w-4 h-4 bg-blue-400 rounded-full cursor-pointer" title="Tasks"></div>
+                                    </div>
+                                    
+                                    <div class="flex-1 p-2">
+                                        <div class="w-full h-2 bg-slate-100 mb-1 rounded relative">
+                                            <div class="absolute -top-1 left-4 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-b-[6px] border-b-blue-500"></div>
+                                            <div class="absolute -top-3 left-10 text-[8px] text-blue-500 font-bold">Regla & Márgenes</div>
+                                        </div>
+                                        <div class="text-slate-300 text-[10px] mt-4 text-center">Área de Documento</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botón Siguiente -->
+                <div class="mt-12 flex justify-end pb-4">
+                    <button onclick="switchTab(2)" class="btn-continue group">
+                        <span>Continuar</span> 
+                        <i class="fa-solid fa-arrow-right text-slate-400 group-hover:text-white"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- MÓDULO 2: EDICIÓN -->
+            <section id="view-2" class="max-w-6xl mx-auto hidden fade-in">
+                <div class="text-center mb-10">
+                    <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Módulo 2</span>
+                    <h2 class="text-4xl font-bold text-slate-800 brand-font mt-2">Edición y Formato Profesional</h2>
+                </div>
+
+                <div class="glass-card p-8 mb-8">
+                    <!-- SIMULADOR DE LIMPIEZA -->
+                    <div class="flex flex-col md:flex-row gap-8 items-start">
+                        <div class="flex-1 w-full">
+                            <h3 class="text-xl font-bold text-slate-800 mb-2">Manipulación de Texto</h3>
+                            <p class="text-sm text-slate-500 mb-4">El error más común: Copiar "sucio" de internet.</p>
+                            
+                            <div class="bg-white border rounded-xl p-1 shadow-inner relative">
+                                <div class="bg-slate-50 border-b p-2 flex gap-2 items-center justify-between">
+                                    <span class="text-xs font-bold text-slate-400 uppercase">Simulador</span>
+                                    <button onclick="cleanText()" class="px-3 py-1 bg-white border shadow-sm rounded text-xs font-bold hover:bg-indigo-50 text-indigo-600 transition interactive-btn flex items-center gap-2">
+                                        <i class="fa-solid fa-eraser"></i> Borrar Formato (T tachada)
+                                    </button>
+                                </div>
+                                <div class="p-6 min-h-[120px] relative">
+                                    <div id="dirty-text" class="transition-all duration-500 text-lg">
+                                        <span class="bg-slate-200 font-serif">Texto copiado de Wikipedia</span> con <a href="#" class="text-blue-600 underline">enlaces raros</a> y <span class="bg-yellow-200 font-mono">fondos de color</span>.
+                                    </div>
+                                    <div id="clean-feedback" class="absolute bottom-2 right-2 text-xs font-bold text-green-500 opacity-0 transition-opacity">¡Limpieza completada! ✨</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-72 space-y-4">
+                            <div class="p-4 rounded-xl border border-red-100 bg-red-50/50">
+                                <h4 class="font-bold text-red-800 mb-1 text-sm"><i class="fa-solid fa-xmark mr-1"></i> Ctrl + V (Normal)</h4>
+                                <p class="text-xs text-slate-600">
+                                    Arrastra fondos grises, tipografías raras y enlaces rotos.
+                                </p>
+                            </div>
+                            <div class="p-4 rounded-xl border border-green-100 bg-green-50/50">
+                                <h4 class="font-bold text-green-800 mb-1 text-sm"><i class="fa-solid fa-check mr-1"></i> Ctrl + Shift + V</h4>
+                                <p class="text-xs text-slate-600">
+                                    "Pegar sin formato". La solución limpia que usan los profesionales.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="glass-card p-6 rich-text">
+                        <h4 class="font-bold text-slate-700 mb-2"><i class="fa-solid fa-font text-indigo-500 mr-2"></i>Tipografía</h4>
+                        <p>No te limites a Arial.</p>
+                        <ul>
+                            <li>Usa el botón <b>"Más fuentes"</b> para agregar tipografías modernas como Montserrat o Roboto.</li>
+                        </ul>
+                    </div>
+                    <div class="glass-card p-6 rich-text">
+                        <h4 class="font-bold text-slate-700 mb-2"><i class="fa-solid fa-align-justify text-indigo-500 mr-2"></i>Párrafo</h4>
+                        <ul>
+                            <li><b>Justificado:</b> Obligatorio para documentos formales.</li>
+                            <li><b>Sangría:</b> Usa el triángulo azul de la regla (no la barra espaciadora).</li>
+                            <li><b>Espaciado:</b> Usa "Añadir espacio después del párrafo" para que respire.</li>
+                        </ul>
+                    </div>
+                    <div class="glass-card p-6 rich-text">
+                        <h4 class="font-bold text-slate-700 mb-2"><i class="fa-solid fa-heading text-indigo-500 mr-2"></i>Estilos</h4>
+                        <p><b>Concepto Clave:</b> "Título 1" no es solo tamaño.</p>
+                        <ul>
+                            <li>Son etiquetas de estructura.</li>
+                            <li>Permiten generar el <b>Índice Automático</b> después.</li>
+                            <li>Aparecen en el esquema de navegación (izquierda).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Botón Siguiente -->
+                <div class="mt-12 flex justify-end pb-4">
+                    <button onclick="switchTab(3)" class="btn-continue group">
+                        <span>Siguiente Lección</span> 
+                        <i class="fa-solid fa-arrow-right text-slate-400 group-hover:text-white"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- MÓDULO 3: DISEÑO -->
+            <section id="view-3" class="max-w-6xl mx-auto hidden fade-in">
+                <div class="text-center mb-10">
+                    <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Módulo 3</span>
+                    <h2 class="text-4xl font-bold text-slate-800 brand-font mt-2">Diseño Visual y Estructura</h2>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <!-- Imágenes Interactiva -->
+                    <div class="glass-card p-8 bg-white relative overflow-hidden group">
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">Imágenes y Ajuste</h3>
+                        <p class="text-sm text-slate-500 mb-6">
+                            Problema común: La imagen "rompe" el texto. Solución: Ajustar texto.
+                        </p>
+                        
+                        <!-- Demo Imagen -->
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 relative min-h-[200px]">
+                            <p class="text-xs text-slate-400 text-justify leading-relaxed mb-2">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                            </p>
+                            
+                            <div id="demo-img" class="w-24 h-24 bg-indigo-500 rounded-lg shadow-lg text-white flex items-center justify-center text-xs font-bold absolute top-10 right-10 transition-all duration-500 z-10 cursor-pointer border-4 border-white hover:scale-105" onclick="toggleImgWrap()">
+                                <i class="fa-regular fa-image text-2xl mb-1 block"></i> Clickeame
+                            </div>
+                            
+                            <p class="text-xs text-slate-400 text-justify leading-relaxed">
+                                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.
+                            </p>
+                            
+                            <div id="wrap-btn" class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-3 py-1 rounded-full text-[10px] opacity-0 transition-opacity font-bold">Modo: Ajustar Texto Activado</div>
+                        </div>
+                        
+                        <div class="mt-4 bg-yellow-50 p-3 rounded-lg text-xs text-yellow-800 border border-yellow-100">
+                            <b>Inserción Rápida:</b> Usa <code>Insertar > Imagen > Buscar en la web</code>. Busca "Gato" y arrástralo sin salir de Google Docs.
+                        </div>
+                        <div class="mt-2 text-xs text-slate-500">
+                            <b>Marcas de Agua:</b> Pon un logo tenue detrás del texto para documentos "Confidenciales".
+                        </div>
+                    </div>
+
+                    <!-- Organización -->
+                    <div class="space-y-6">
+                        <div class="glass-card p-6">
+                            <h3 class="text-lg font-bold text-slate-800 mb-2"><i class="fa-solid fa-table text-indigo-500 mr-2"></i>Truco: Tabla Invisible</h3>
+                            <p class="text-xs text-slate-500 mb-3">Para diagramar como una revista (Texto al lado de Imagen):</p>
+                            <ol class="list-decimal pl-4 text-xs text-slate-600 space-y-1 mb-3">
+                                <li>Crea una tabla de 2x1.</li>
+                                <li>Pon texto a un lado e imagen al otro.</li>
+                                <li>Pon los bordes en color blanco (0pt).</li>
+                            </ol>
+                            <div class="border border-dashed border-slate-300 p-2 rounded bg-slate-50 flex gap-2 opacity-70">
+                                <div class="flex-1 h-10 bg-slate-200 rounded flex items-center justify-center text-[10px]">Texto</div>
+                                <div class="flex-1 h-10 bg-slate-200 rounded flex items-center justify-center text-[10px]">Img</div>
+                            </div>
+                        </div>
+
+                        <div class="glass-card p-6">
+                            <h3 class="text-lg font-bold text-slate-800 mb-2"><i class="fa-solid fa-list-check text-indigo-500 mr-2"></i>Listas & Checklists</h3>
+                            <div class="space-y-2">
+                                <div class="flex items-center gap-2 text-xs text-slate-600"><input type="checkbox" checked class="accent-indigo-500"> <span class="line-through opacity-50">Tarea completada</span></div>
+                                <div class="flex items-center gap-2 text-xs text-slate-600"><input type="checkbox" class="accent-indigo-500"> <span>Pendiente interactivo</span></div>
+                            </div>
+                        </div>
+
+                        <div class="glass-card p-6 bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
+                            <h3 class="text-lg font-bold mb-1 flex items-center gap-2"><i class="fa-solid fa-list-ol"></i> El Gran Final: Índice</h3>
+                            <p class="text-xs opacity-90">Ve al principio, <code>Insertar > Índice</code>. ¡Bum! Se genera solo gracias a los Títulos del Módulo 2.</p>
+                        </div>
+                        
+                        <div class="glass-card p-4 border-l-4 border-l-purple-500">
+                            <p class="text-xs text-slate-600"><b>Add-ons:</b> Docs es como un smartphone, instala apps como "Flaticon" para iconos.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botón Siguiente -->
+                <div class="mt-12 flex justify-end pb-4">
+                    <button onclick="switchTab(4)" class="btn-continue group">
+                        <span>Siguiente Lección</span> 
+                        <i class="fa-solid fa-arrow-right text-slate-400 group-hover:text-white"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- MÓDULO 4: COLABORACIÓN -->
+            <section id="view-4" class="max-w-6xl mx-auto hidden fade-in">
+                <div class="text-center mb-10">
+                    <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Módulo 4</span>
+                    <h2 class="text-4xl font-bold text-slate-800 brand-font mt-2">Colaboración en Tiempo Real</h2>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <div class="glass-card p-8">
+                        <h3 class="text-xl font-bold text-slate-800 mb-4"><i class="fa-solid fa-shield-halved text-indigo-500 mr-2"></i>Compartir con Seguridad</h3>
+                        <p class="text-sm text-slate-500 mb-6">Escenario: Vas a enviar esto a 3 personas diferentes.</p>
+                        
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center p-3 bg-green-50 border border-green-100 rounded-xl">
+                                <div>
+                                    <span class="text-sm font-bold text-slate-700 block">Colega</span>
+                                    <span class="text-[10px] text-slate-500">Trabaja contigo</span>
+                                </div>
+                                <span class="bg-white text-green-700 px-2 py-1 rounded shadow-sm text-xs font-bold">Editor ✏️</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-yellow-50 border border-yellow-100 rounded-xl">
+                                <div>
+                                    <span class="text-sm font-bold text-slate-700 block">Jefe</span>
+                                    <span class="text-[10px] text-slate-500">Solo revisa</span>
+                                </div>
+                                <span class="bg-white text-yellow-700 px-2 py-1 rounded shadow-sm text-xs font-bold">Comentador 💬</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                                <div>
+                                    <span class="text-sm font-bold text-slate-700 block">Cliente</span>
+                                    <span class="text-[10px] text-slate-500">Solo mira</span>
+                                </div>
+                                <span class="bg-white text-slate-700 px-2 py-1 rounded shadow-sm text-xs font-bold">Lector 👀</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 p-3 bg-red-50 border border-red-100 rounded-lg flex gap-3 items-start">
+                            <i class="fa-solid fa-triangle-exclamation text-red-500 mt-1"></i>
+                            <p class="text-xs text-red-800"><b>Peligro:</b> Evita usar "Cualquier persona con el enlace puede editar".</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-8">
+                        <h3 class="text-xl font-bold text-slate-800 mb-4"><i class="fa-solid fa-users-viewfinder text-indigo-500 mr-2"></i>Flujo de Trabajo</h3>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-700 mb-2">1. Comentarios y @Menciones</h4>
+                                <div class="bg-white border rounded-xl p-4 shadow-sm relative">
+                                    <span class="bg-yellow-200 text-slate-800">Revisar presupuesto</span>
+                                    <!-- Tooltip Comentario -->
+                                    <div class="absolute -right-2 -top-4 bg-slate-800 text-white p-2 rounded-lg text-[10px] shadow-xl w-48 z-10">
+                                        <b>@juan@email.com</b> <br> Asignar tarea. Le llegará un email de notificación.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-700 mb-2">2. Modo Sugerencias</h4>
+                                <div class="bg-green-50 border border-green-200 rounded-xl p-4 text-sm text-slate-700">
+                                    El proyecto es <span class="line-through text-slate-400 decoration-red-400">malo</span> <span class="text-green-600 font-bold bg-white px-1 rounded shadow-sm">excelente</span>.
+                                </div>
+                                <p class="text-[10px] text-slate-400 mt-1">Cambia de "Edición" a "Sugerencias" (icono lápiz). No borras, sugieres.</p>
+                            </div>
+                            
+                            <div class="bg-slate-50 p-3 rounded-lg text-xs text-slate-600 border border-slate-200">
+                                <b>Historial de Versiones:</b> <code>Archivo > Historial</code>. Viaja al pasado y ve el doc hace 2 horas. <b>Tip:</b> Pon nombre a las versiones (ej. "Borrador Final").
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botón Siguiente -->
+                <div class="mt-12 flex justify-end pb-4">
+                    <button onclick="switchTab(5)" class="btn-continue group">
+                        <span>Siguiente Lección</span> 
+                        <i class="fa-solid fa-arrow-right text-slate-400 group-hover:text-white"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- MÓDULO 5: HERRAMIENTAS IA -->
+            <section id="view-5" class="max-w-6xl mx-auto hidden fade-in">
+                <div class="text-center mb-10">
+                    <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Módulo 5</span>
+                    <h2 class="text-4xl font-bold text-slate-800 brand-font mt-2">Herramientas Inteligentes y Finalización</h2>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="glass-card p-8 text-center hover:scale-105 transition duration-300">
+                        <div class="w-14 h-14 bg-pink-100 text-pink-500 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 shadow-sm">
+                            <i class="fa-solid fa-microphone"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-800 mb-2">Asistencia</h3>
+                        <ul class="text-xs text-slate-500 text-left space-y-2">
+                            <li><b>Dictado por Voz:</b> <code>Herramientas > Dictado</code>. Habla rápido. Comandos: "Punto", "Nuevo párrafo".</li>
+                            <li><b>Traducir:</b> Genera una copia instantánea en inglés/francés.</li>
+                        </ul>
+                    </div>
+
+                    <div class="glass-card p-8 text-center hover:scale-105 transition duration-300 border-indigo-200 ring-4 ring-indigo-50">
+                        <div class="w-14 h-14 bg-indigo-100 text-indigo-500 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4 shadow-sm font-serif font-bold">@</div>
+                        <h3 class="font-bold text-slate-800 mb-2">Smart Canvas</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed mb-4">
+                            La "Arroba Mágica". Escribe solo <b>@</b> para insertar:
+                        </p>
+                        <div class="flex flex-col gap-2 text-[10px] text-left bg-slate-50 p-3 rounded-lg">
+                            <div class="flex gap-2 items-center"><i class="fa-regular fa-calendar"></i> Fecha (Abre calendario)</div>
+                            <div class="flex gap-2 items-center"><i class="fa-solid fa-user"></i> Persona (Muestra contacto)</div>
+                            <div class="flex gap-2 items-center"><i class="fa-brands fa-google-drive"></i> Archivo (Enlace inteligente)</div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-8 text-center hover:scale-105 transition duration-300">
+                        <div class="w-14 h-14 bg-teal-100 text-teal-500 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 shadow-sm">
+                            <i class="fa-solid fa-file-export"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-800 mb-2">Salida</h3>
+                        <ul class="text-xs text-slate-500 text-left space-y-2">
+                            <li><b>PDF:</b> Impresión / Final.</li>
+                            <li><b>Word (.docx):</b> Si el receptor exige editar en Office.</li>
+                            <li><b>Publicar en web:</b> Convierte el doc en una página web pública simple (sin cuenta Google).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Botón Siguiente (ESPECIAL) -->
+                <div class="mt-12 flex justify-end pb-4">
+                    <button onclick="switchTab(6)" class="btn-continue btn-final group">
+                        <span>Ir a la Graduación</span> 
+                        <i class="fa-solid fa-graduation-cap ml-2"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- EJERCICIOS Y QUIZ -->
+            <section id="view-6" class="max-w-5xl mx-auto hidden fade-in pb-10">
+                <div class="glass-card p-12 text-center relative overflow-hidden bg-white border border-slate-200 shadow-xl">
+                    <!-- Fondo sutil -->
+                    <div class="absolute inset-0 bg-slate-50 opacity-50 z-0"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce">
+                            <i class="fa-solid fa-gamepad text-4xl text-yellow-500"></i>
+                        </div>
+                        
+                        <h2 class="text-3xl font-bold mb-4 brand-font text-slate-800">Misiones Finales</h2>
+                        <p class="text-slate-500 mb-10 max-w-lg mx-auto text-sm">
+                            ¡Demuestra que eres un Maestro de Docs! Completa estas 3 misiones para desbloquear tu certificado imaginario.
+                        </p>
+
+                        <!-- Tarjetas de Ejercicios Prácticos (VERSIÓN KIDS) -->
+                        <div class="grid md:grid-cols-3 gap-6 text-left text-slate-800 mb-12">
+                            <!-- Misión 1 -->
+                            <div class="bg-white border border-green-200 p-6 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-2 transition duration-300">
+                                <div class="text-[10px] font-bold text-green-600 uppercase mb-3 tracking-wider bg-green-50 w-max px-2 py-1 rounded-full">Misión 1: Diseño</div>
+                                <h4 class="font-bold mb-2 text-lg">🎉 La Invitación Épica</h4>
+                                <p class="text-xs text-slate-500 leading-relaxed">
+                                    Crea una invitación para tu cumpleaños o un torneo de videojuegos. 
+                                    <br><br>
+                                    <b>Reto:</b> Usa 3 fuentes distintas, letras de colores y una imagen buscada en la web (sin salir de Docs).
+                                </p>
+                            </div>
+
+                            <!-- Misión 2 -->
+                            <div class="bg-white border border-indigo-200 p-6 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-2 transition duration-300 relative overflow-hidden">
+                                <div class="absolute top-0 right-0 w-16 h-16 bg-indigo-50 rounded-bl-full -mr-8 -mt-8 z-0"></div>
+                                <div class="relative z-10">
+                                    <div class="text-[10px] font-bold text-indigo-600 uppercase mb-3 tracking-wider bg-indigo-50 w-max px-2 py-1 rounded-full">Misión 2: Wiki-Experto</div>
+                                    <h4 class="font-bold mb-2 text-lg">🔎 Investigación Top</h4>
+                                    <p class="text-xs text-slate-500 leading-relaxed">
+                                        Copia texto de Wikipedia sobre tu animal o juego favorito.
+                                        <br><br>
+                                        <b>Reto:</b> "Pegar sin formato" (¡limpio!), pon Títulos Grandes (H1) y genera el <b>Índice Automático</b> mágico al inicio.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Misión 3 -->
+                            <div class="bg-white border border-purple-200 p-6 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-2 transition duration-300">
+                                <div class="text-[10px] font-bold text-purple-600 uppercase mb-3 tracking-wider bg-purple-50 w-max px-2 py-1 rounded-full">Misión 3: Editor Jefe</div>
+                                <h4 class="font-bold mb-2 text-lg">🕵️‍♂️ Detective de Errores</h4>
+                                <p class="text-xs text-slate-500 leading-relaxed">
+                                    Escribe una historia corta con errores a propósito.
+                                    <br><br>
+                                    <b>Reto:</b> Activa el <b>"Modo Sugerencias"</b> (el lápiz verde) para corregirte a ti mismo y deja un comentario con @mención para un amigo imaginario.
+                                </p>
+                            </div>
+                        </div>
+
+                        <button onclick="celebrate()" class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-10 py-4 rounded-full font-bold text-base shadow-lg hover:shadow-xl hover:scale-105 transition-all interactive-btn inline-block">
+                            ¡Misiones Completadas! 🚀
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- SCRIPTS -->
+    <script>
+        // Navegación
+        function switchTab(index) {
+            document.getElementById('scroll-container').scrollTo({ top: 0, behavior: 'smooth' });
+            
+            for(let i=1; i<=6; i++) {
+                const view = document.getElementById(`view-${i}`);
+                const tab = document.getElementById(`tab-${i}`);
+                if(view) {
+                    view.classList.remove('block');
+                    view.classList.add('hidden');
+                }
+                if(tab) tab.classList.remove('active');
+            }
+
+            const currentView = document.getElementById(`view-${index}`);
+            const currentTab = document.getElementById(`tab-${index}`);
+            
+            if(currentView) {
+                currentView.classList.remove('hidden');
+                currentView.classList.add('block');
+                // Retrigger animation
+                currentView.classList.remove('fade-in');
+                void currentView.offsetWidth; 
+                currentView.classList.add('fade-in');
+            }
+            if(currentTab) currentTab.classList.add('active');
+
+            // Barra Progreso
+            const progress = (index / 6) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+        }
+
+        // Simulador Limpieza Texto
+        function cleanText() {
+            const text = document.getElementById('dirty-text');
+            const feedback = document.getElementById('clean-feedback');
+            
+            text.innerHTML = "Texto copiado de Wikipedia con enlaces raros y formatos extraños.";
+            text.className = "transition-all duration-500 font-sans text-slate-800";
+            
+            feedback.style.opacity = '1';
+            setTimeout(() => feedback.style.opacity = '0', 2000);
+        }
+
+        // Simulador Imagen Wrap
+        function toggleImgWrap() {
+            const img = document.getElementById('demo-img');
+            const btn = document.getElementById('wrap-btn');
+            
+            if(img.classList.contains('absolute')) {
+                // Modo Ajustado
+                img.classList.remove('absolute', 'top-10', 'right-10');
+                img.classList.add('float-right', 'ml-4', 'mb-2');
+                btn.style.opacity = '1';
+            } else {
+                // Reset
+                img.classList.add('absolute', 'top-10', 'right-10');
+                img.classList.remove('float-right', 'ml-4', 'mb-2');
+                btn.style.opacity = '0';
+            }
+        }
+
+        // Celebración Final
+        function celebrate() {
+            var duration = 3 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                var particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+            
+            setTimeout(() => {
+                // Redirigir a Google Docs para practicar
+                window.open("https://docs.google.com", "_blank");
+            }, 2000);
+        }
+
+        // Start
+        switchTab(1);
+    </script>
+</body>
+</html>
